@@ -24,7 +24,7 @@ Este é o empacotamento oficial de desktop e versão portátil do aclamado proje
 A versão portátil de desktop foi projetada para eliminar diversas fricções de usabilidade, configuração de ambiente e controle de custos que existiam no script de terminal original:
 
 * **Zero Configuração de Ambiente (Portátil)**: O projeto original exigia a instalação global do Node.js, Python 3, compiladores C++ e várias bibliotecas Python pesadas (pandas, networkx, etc.). O `.exe` agrupa todos os scripts de análise, interpretadores e mescladores em TypeScript nativo de forma isolada. É só baixar, rodar e analisar imediatamente.
-* **Avaliação Prévia de Custo de Tokens**: Antes de gastar créditos nas APIs do Gemini ou Claude, o App Desktop faz uma varredura estática no seu projeto e exibe um resumo detalhado de arquivos, estimativa de lotes de envio e projeção de tokens, permitindo decidir se deseja continuar ou abortar.
+* **Avaliação Prévia de Custo de Tokens**: Antes de gastar créditos nas APIs do Gemini ou Claude, o App Desktop faz uma varredura estática no seu projeto e exibe um resumo detalhado de arquivos, estimativa de lotes de envio e projeção de tokens, permitindo decidir se deseja continuar ou abortar. **Você pode editar as regras do `.understandignore` diretamente nesse modal e recalcular os custos na hora!**
 * **Cancelamento Ativo em Tempo Real**: Se a análise estiver demorando muito ou custando mais do que o esperado, você pode interrompê-la com um clique. O backend cancela as chamadas de IA pendentes e limpa arquivos temporários na hora. Na CLI, forçar a parada com `Ctrl+C` deixava processos fantasmas no sistema operacional e arquivos corrompidos.
 * **Histórico de Projetos Recentes (Carregamento em 1s)**: O app mantém um histórico dos últimos 5 repositórios analisados. Se o projeto já possuir um grafo gerado anteriormente, você pode abri-lo instantaneamente pela interface gráfica em 1 segundo, sem consumir novos tokens de IA ou precisar digitar caminhos de pastas no terminal.
 * **Sincronização Dinâmica de Idiomas**: Altere o idioma do aplicativo a qualquer momento. A interface salva e atualiza a configuração do projeto atual de forma síncrona para que o dashboard de renderização reflita o idioma escolhido imediatamente.
@@ -37,8 +37,8 @@ A versão portátil de desktop foi projetada para eliminar diversas fricções d
 Como o **Understand Anything** lê a lógica real da sua base de código (Fase 2) para construir o grafo de conhecimento semântico, analisar diretórios pesados de terceiros ou arquivos compilados pode consumir tokens de API de IA em excesso.
 
 Para evitar custos desnecessários:
-1. Dentro da pasta do seu projeto, localize ou crie o diretório `.understand-anything/`.
-2. Crie ou edite um arquivo chamado `.understandignore` dentro dessa pasta.
+1. **Editor Visual Integrado**: Você pode criar ou editar seus padrões do `.understandignore` diretamente no modal de estimativa de custos antes de prosseguir com a IA.
+2. Alternativamente, crie ou edite um arquivo chamado `.understandignore` dentro da pasta `.understand-anything/` na raiz do seu projeto.
 3. Adicione padrões glob (glob patterns) para arquivos e pastas que você deseja ignorar (ex: `node_modules/`, `dist/`, `.git/`, logs, imagens).
 4. Para um tutorial detalhado de configuração e regras avançadas, consulte o [TUTORIAL.pt-BR.md](file:///c:/Users/PC/Documents/Bots/Understand-Anything/docs/TUTORIAL.pt-BR.md) completo!
 
