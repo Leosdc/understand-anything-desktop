@@ -4,9 +4,11 @@
   <img src="src/renderer/assets/mascote.png" width="160" alt="Mascote Understand Anything" />
 </p>
 
-[![GitHub](https://img.shields.io/badge/GitHub-Repo-181717?logo=github)](https://github.com/Leosdc/understand-anything-desktop)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE)
-[![Creator Original](https://img.shields.io/badge/Original_Creator-Luminis-38bdf8)](https://lum.is-a.dev/)
+<p align="center">
+  <a href="https://github.com/Leosdc/understand-anything-desktop"><img src="https://img.shields.io/badge/GitHub-Repo-181717?logo=github" alt="GitHub" /></a>
+  <a href="https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT" /></a>
+  <a href="https://lum.is-a.dev/"><img src="https://img.shields.io/badge/Original_Creator-Luminis-38bdf8" alt="Creator Original" /></a>
+</p>
 
 Turn any codebase into an interactive knowledge graph you can explore visually, search, and audit. **Now with a beautiful, zero-dependency Desktop App for Windows!**
 
@@ -14,6 +16,19 @@ This is the official desktop wrapper and portable version of the acclaimed **Und
 
 > [!IMPORTANT]
 > **Credits & Acknowledgements:** This desktop application is built on top of the exceptional codebase analysis pipeline created by the original developer, **Luminis** ([https://lum.is-a.dev/](https://lum.is-a.dev/) / [Understand-Anything Repo](https://github.com/Egonex-AI/Understand-Anything)). We ported the Python graph mergers to native TypeScript and built a secure Electron desktop environment to make this powerful tool accessible to everyone without terminal dependencies.
+
+---
+
+## 💡 Why use the Desktop App (.exe) instead of the original CLI?
+
+The desktop portable version was designed to solve several usability, environment setup, and cost control friction points of the original CLI:
+
+* **Zero Environment Setup (Portable)**: The original project required Node.js, Python 3, C++ compilers, and several Python libraries (pandas, networkx, etc.). The `.exe` bundles all analysis scripts, parsers, and node linkers in native TypeScript. Download, run, and analyze immediately.
+* **Cost Appraisal & Token Estimates**: Before spending your money on Gemini or Claude API tokens, the Desktop App scans your folder and displays a summary of the files, estimated AI request batches, and tokens, allowing you to proceed or cancel.
+* **Real-time Cancellation**: If an analysis is taking too long or costing too much, you can cancel it with one click. The backend halts active API calls and cleans up temporary files immediately. In the CLI, killing with `Ctrl+C` could leave rogue processes and corrupted files.
+* **Recent Projects History (1-Second Loading)**: Keep a list of your last 5 analyzed codebases. Load their visual graph instantly from the UI without performing a new analysis or writing terminal command paths.
+* **Dynamic Multi-Language Sync**: Switch the interface language dynamically. The app automatically updates your active project configuration so that the rendering dashboard matches your preferred language immediately.
+* **Secure Local Server**: Runs a secure, lightweight Express backend locally, protected by a single-use authorization token generated on startup to prevent local network breaches.
 
 ### 📊 Architecture & Data Flow
 

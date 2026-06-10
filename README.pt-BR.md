@@ -4,9 +4,11 @@
   <img src="src/renderer/assets/mascote.png" width="160" alt="Mascote Understand Anything" />
 </p>
 
-[![GitHub](https://img.shields.io/badge/GitHub-Repo-181717?logo=github)](https://github.com/Leosdc/understand-anything-desktop)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE)
-[![Original Creator](https://img.shields.io/badge/Criador_Original-Luminis-38bdf8)](https://lum.is-a.dev/)
+<p align="center">
+  <a href="https://github.com/Leosdc/understand-anything-desktop"><img src="https://img.shields.io/badge/GitHub-Repo-181717?logo=github" alt="GitHub" /></a>
+  <a href="https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT" /></a>
+  <a href="https://lum.is-a.dev/"><img src="https://img.shields.io/badge/Criador_Original-Luminis-38bdf8" alt="Criador Original" /></a>
+</p>
 
 Transforme qualquer base de código em um grafo de conhecimento interativo para explorar visualmente, pesquisar e auditar. **Agora com um aplicativo desktop para Windows bonito e sem dependências locais!**
 
@@ -14,6 +16,19 @@ Este é o empacotamento oficial de desktop e versão portátil do aclamado proje
 
 > [!IMPORTANT]
 > **Créditos & Agradecimentos:** Este aplicativo desktop é construído sobre o excepcional pipeline de análise de código criado pelo desenvolvedor original, **Luminis** ([https://lum.is-a.dev/](https://lum.is-a.dev/) / [Repositório Understand-Anything](https://github.com/Egonex-AI/Understand-Anything)). Nós portamos os mescladores de grafo escritos em Python para TypeScript nativo e criamos um ambiente seguro em Electron para tornar esta ferramenta incrível acessível a todos sem dependências de terminal ou interpretadores locais.
+
+---
+
+## 💡 Por que usar a versão Desktop (.exe) em vez da CLI original?
+
+A versão portátil de desktop foi projetada para eliminar diversas fricções de usabilidade, configuração de ambiente e controle de custos que existiam no script de terminal original:
+
+* **Zero Configuração de Ambiente (Portátil)**: O projeto original exigia a instalação global do Node.js, Python 3, compiladores C++ e várias bibliotecas Python pesadas (pandas, networkx, etc.). O `.exe` agrupa todos os scripts de análise, interpretadores e mescladores em TypeScript nativo de forma isolada. É só baixar, rodar e analisar imediatamente.
+* **Avaliação Prévia de Custo de Tokens**: Antes de gastar créditos nas APIs do Gemini ou Claude, o App Desktop faz uma varredura estática no seu projeto e exibe um resumo detalhado de arquivos, estimativa de lotes de envio e projeção de tokens, permitindo decidir se deseja continuar ou abortar.
+* **Cancelamento Ativo em Tempo Real**: Se a análise estiver demorando muito ou custando mais do que o esperado, você pode interrompê-la com um clique. O backend cancela as chamadas de IA pendentes e limpa arquivos temporários na hora. Na CLI, forçar a parada com `Ctrl+C` deixava processos fantasmas no sistema operacional e arquivos corrompidos.
+* **Histórico de Projetos Recentes (Carregamento em 1s)**: O app mantém um histórico dos últimos 5 repositórios analisados. Se o projeto já possuir um grafo gerado anteriormente, você pode abri-lo instantaneamente pela interface gráfica em 1 segundo, sem consumir novos tokens de IA ou precisar digitar caminhos de pastas no terminal.
+* **Sincronização Dinâmica de Idiomas**: Altere o idioma do aplicativo a qualquer momento. A interface salva e atualiza a configuração do projeto atual de forma síncrona para que o dashboard de renderização reflita o idioma escolhido imediatamente.
+* **Servidor HTTP Local Protegido**: O app inicializa um backend Express local de forma totalmente invisível e o protege com tokens criptográficos únicos gerados a cada inicialização, impedindo que outros dispositivos na sua rede local acessem os dados do seu código.
 
 ### 📊 Fluxo de Trabalho & Dados
 

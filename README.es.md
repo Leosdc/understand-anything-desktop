@@ -4,9 +4,11 @@
   <img src="src/renderer/assets/mascote.png" width="160" alt="Mascote Understand Anything" />
 </p>
 
-[![GitHub](https://img.shields.io/badge/GitHub-Repo-181717?logo=github)](https://github.com/Leosdc/understand-anything-desktop)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE)
-[![Original Creator](https://img.shields.io/badge/Creador_Original-Luminis-38bdf8)](https://lum.is-a.dev/)
+<p align="center">
+  <a href="https://github.com/Leosdc/understand-anything-desktop"><img src="https://img.shields.io/badge/GitHub-Repo-181717?logo=github" alt="GitHub" /></a>
+  <a href="https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT" /></a>
+  <a href="https://lum.is-a.dev/"><img src="https://img.shields.io/badge/Creador_Original-Luminis-38bdf8" alt="Creador Original" /></a>
+</p>
 
 Transforme cualquier base de código en un gráfico de conocimiento interactivo para explorar visualmente, buscar y auditar. **¡Ahora con una hermosa aplicación de escritorio para Windows sin dependencias locales!**
 
@@ -14,6 +16,19 @@ Esta es la versión oficial de envoltura de escritorio y portátil del aclamado 
 
 > [!IMPORTANT]
 > **Créditos y Agradecimientos:** Esta aplicación de escritorio está construida sobre el excepcional pipeline de análisis de código creado por el desarrollador original, **Luminis** ([https://lum.is-a.dev/](https://lum.is-a.dev/) / [Repositorio de Understand-Anything](https://github.com/Egonex-AI/Understand-Anything)). Adaptamos los unificadores de gráficos de Python a TypeScript nativo y creamos un entorno seguro en Electron para hacer que esta poderosa herramienta sea accesible para todos sin dependencias de consola o interpretadores locales.
+
+---
+
+## 💡 ¿Por qué usar la versión Desktop (.exe) en lugar de la CLI original?
+
+La versión portátil de escritorio fue diseñada para eliminar diversos obstáculos de usabilidad, configuración de entorno y control de costos presentes en el script de consola original:
+
+* **Sin Configuración de Entorno (Portátil)**: El proyecto original requería instalar de forma global Node.js, Python 3, compiladores de C++ y varias librerías pesadas de Python (como pandas, networkx, etc.). El `.exe` compila todos los analizadores, scripts y enlazadores de nodos directamente en TypeScript nativo. Descarga, ejecuta y analiza de inmediato.
+* **Proyección y Estimación de Costos previa**: Antes de consumir saldo en las API de Gemini o Claude, la aplicación realiza un análisis inicial del proyecto y muestra una vista previa del total de archivos, lotes de envío e inputs/outputs de tokens estimados para que decidas si deseas continuar o cancelar.
+* **Cancelación Activa en Tiempo Real**: Si la ejecución tarda mucho o el costo sube de manera imprevista, puedes cancelarla con un solo clic. El backend detiene las peticiones de IA activas y elimina los archivos temporales de forma inmediata. En la CLI, forzar el cierre con `Ctrl+C` generaba procesos zombies en el sistema y archivos corruptos.
+* **Historial de Proyectos Recientes (Carga en 1s)**: Guarda una lista de tus últimos 5 repositorios analizados. Carga sus gráficos de forma instantánea a través de la interfaz en solo un segundo, sin gastar saldo de API ni volver a realizar un análisis completo o escribir rutas de carpetas.
+* **Sincronización Dinámica de Idiomas**: Cambia el idioma de la aplicación en cualquier momento. La interfaz sincroniza de inmediato la configuración con el proyecto actual para que el dashboard visual refleje el nuevo idioma seleccionado de forma síncrona.
+* **Servidor HTTP Local Protegido**: Inicializa un servidor backend ligero en Express protegido por tokens criptográficos únicos autogenerados en el inicio, evitando que otros equipos de tu red local accedan a tu base de código.
 
 ### 📊 Flujo de Trabajo y Datos
 

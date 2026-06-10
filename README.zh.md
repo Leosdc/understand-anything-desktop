@@ -4,9 +4,11 @@
   <img src="src/renderer/assets/mascote.png" width="160" alt="Understand Anything 智能助手" />
 </p>
 
-[![GitHub](https://img.shields.io/badge/GitHub-Repo-181717?logo=github)](https://github.com/Leosdc/understand-anything-desktop)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE)
-[![Original Creator](https://img.shields.io/badge/Original_Creator-Luminis-38bdf8)](https://lum.is-a.dev/)
+<p align="center">
+  <a href="https://github.com/Leosdc/understand-anything-desktop"><img src="https://img.shields.io/badge/GitHub-Repo-181717?logo=github" alt="GitHub" /></a>
+  <a href="https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT" /></a>
+  <a href="https://lum.is-a.dev/"><img src="https://img.shields.io/badge/Original_Creator-Luminis-38bdf8" alt="Original Creator" /></a>
+</p>
 
 将任何代码库转换为交互式的 知识图谱，以进行可视化探索、搜索和审计。**现在配备了美观、零本地依赖的 Windows 桌面端应用程序！**
 
@@ -14,6 +16,19 @@
 
 > [!IMPORTANT]
 > **致谢与鸣谢：** 本桌面应用程序基于原作者 **Luminis** 开发的卓越代码库分析流水线构建（[https://lum.is-a.dev/](https://lum.is-a.dev/) / [Understand-Anything 仓库](https://github.com/Egonex-AI/Understand-Anything)）。我们将 Python 编写 institutional 图谱合并程序移植为原生 TypeScript，并构建了安全的 Electron 桌面环境，使用户无需安装复杂的终端依赖或本地语言环境即可使用此强大工具。
+
+---
+
+## 💡 为什么使用桌面端应用 (.exe) 而不是原始的 CLI 命令行工具？
+
+桌面端便携版本旨在解决原始命令行工具（CLI）中存在的易用性差、环境配置繁琐和成本控制难等痛点：
+
+* **零环境配置（即开即用）**：原始项目需要安装全局 Node.js、Python 3、C++ 编译器以及多个复杂的 Python 依赖库（如 pandas、networkx 等）。桌面端 `.exe` 文件将所有分析脚本、解析器和节点合并工具封装在原生 TypeScript 中。只需下载并直接运行，即可立即开始分析。
+* **费用估算与 Token 限制**：在消耗 Gemini 或 Claude API 额度之前，桌面端应用会首先扫描您的代码库文件夹，并显示待分析文件数、预计 AI 请求批次及 Token 估算总结，供您选择继续或取消。
+* **实时主动取消**：若分析时间过长或费用超出预期，您可随时一键取消。后端会立即终止挂起的 AI 请求并清理本地临时文件。而在 CLI 中强行按下 `Ctrl+C` 往往会导致后台残留孤立进程或产生损坏的图谱文件。
+* **历史最近项目（1秒加载）**：自动记录您最近分析的 5 个代码库。如果项目已生成过图谱，您只需在 UI 中点击即可在 1 秒内直接打开可视化面板，无需再次分析消耗 AI Token，也不必每次手动输入终端路径。
+* **动态多语言同步**：随时在设置面板切换软件语言。桌面端会自动同步修改当前活动项目的配置文件，使 渲染面板能立即切换至您偏好的语言显示。
+* **安全受控的本地服务器**：在后台自动且隐蔽地运行安全的轻量级 Express 服务器，采用启动时随机生成的单次加密 Token 保护，防止局域网内其他设备非法访问您的代码数据。
 
 ### 📊 架构与数据流
 
