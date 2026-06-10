@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Clone and build plugin core
+        run: |
+          git clone https://github.com/Lum1104/Understand-Anything.git ../understand-anything-plugin
+          cd ../understand-anything-plugin
+          pnpm install
+          pnpm --filter @understand-anything/core build
+        shell: bash
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and Package Desktop App
+        run: npm run build
+
+      - name: Compress Release Files
+        run: |
+          cd dist-package
+          powershell Compress-Archive -Path "Understand Anything-win32-x64" -DestinationPath "../Understand-Anything-Desktop-win32-x64.zip"
+        shell: cmd
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Understand-Anything-Desktop-win32-x64.zip
+          name: Release ${{ github.ref_name }}
+          body: |
+            Nova versão do Understand Anything Desktop portátil para Windows.
+            
+            ### O que há de novo:
+            Consulte o arquivo [CHANGELOG.md](CHANGELOG.md) para detalhes completos desta versão.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
