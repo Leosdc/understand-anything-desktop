@@ -1,0 +1,48 @@
+{
+  "name": "@understand-anything/desktop",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/main/electron.cjs",
+  "scripts": {
+    "dev:renderer": "vite",
+    "build:renderer": "vite build",
+    "build:main": "esbuild src/main/electron.ts --bundle --platform=node --target=node22 --external:electron --outfile=dist/main/electron.cjs --format=cjs && esbuild src/main/preload.ts --bundle --platform=node --target=node22 --external:electron --outfile=dist/main/preload.cjs --format=cjs && node scripts/copy-assets.js",
+    "dev": "concurrently \"npm run dev:renderer\" \"npm run build:main\" \"electron .\"",
+    "build": "npm run build:renderer && npm run build:main && electron-packager . \"Understand Anything\" --platform=win32 --arch=x64 --out=dist-package --overwrite --no-prune --ignore=node_modules"
+  },
+  "build": {
+    "appId": "com.understandanything.desktop",
+    "productName": "Understand Anything",
+    "win": {
+      "target": "dir"
+    },
+    "npmRebuild": false,
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist-package"
+    }
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "lucide-react": "^0.470.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "concurrently": "^9.1.0",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "electron-packager": "^17.1.2",
+    "esbuild": "^0.28.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.4.2"
+  }
+}
