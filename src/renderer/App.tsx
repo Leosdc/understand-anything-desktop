@@ -31,7 +31,83 @@ interface ProgressState {
   logLine?: string;
 }
 
-const TRANSLATIONS: Record<string, Record<string, string>> = {
+interface TranslationSchema {
+  title: string;
+  subtitle: string;
+  provider: string;
+  model: string;
+  apiKey: string;
+  show: string;
+  hide: string;
+  apiKeyPlaceholder: string;
+  langLabel: string;
+  projectFolder: string;
+  selectFolderBtn: string;
+  selectFolderPlaceholder: string;
+  graphFound: string;
+  graphNotFound: string;
+  analyzeBtn: string;
+  updateBtn: string;
+  openDashboardBtn: string;
+  recentProjects: string;
+  helpTitle: string;
+  helpP1: string;
+  helpQ1: string;
+  helpA1: string;
+  helpTips: string;
+  helpTip1: string;
+  helpTip2: string;
+  helpQ2: string;
+  helpA2: string;
+  helpUnderstandBtn: string;
+  phaseLabel: string;
+  ofLabel: string;
+  processingLogs: string;
+  noLogs: string;
+  cancelBtn: string;
+  analysisInterrupted: string;
+  apiKeyRequired: string;
+  errorTitle: string;
+  backBtn: string;
+  reloadGraphBtn: string;
+  openBrowserBtn: string;
+  initializing: string;
+  connecting: string;
+  costTitle: string;
+  costMessage: string;
+  costFiles: string;
+  costBatches: string;
+  costTokens: string;
+  costEstimate: string;
+  costContinue: string;
+  costAbort: string;
+  ignoreTitle: string;
+  ignorePlaceholder: string;
+  ignoreRecommended: string;
+  saveRecalculate: string;
+  ignoreHelp: string;
+  extremelyCheap: string;
+  ignoreSuccessTitle: string;
+  ignoreSuccessMessage: string;
+  editIgnoreRules: string;
+  models: {
+    gemini35Flash: string;
+    gemini25Flash: string;
+    gemini25Pro: string;
+    gemini15Flash: string;
+    gemini15Pro: string;
+    gemini20FlashExp: string;
+    claude46Sonnet: string;
+    claude46Opus: string;
+    claude35Sonnet: string;
+    claude35Haiku: string;
+    claude3Opus: string;
+    claude3Sonnet: string;
+    claude3Haiku: string;
+  };
+}
+
+const TRANSLATIONS: Record<string, TranslationSchema> = {
   en: {
     title: "Understand Anything Desktop",
     subtitle: "Generate and explore interactive knowledge graphs of any codebase.",
