@@ -6,8 +6,17 @@
 
 <p align="center">
   <a href="https://github.com/Leosdc/understand-anything-desktop"><img src="https://img.shields.io/badge/GitHub-Repo-181717?logo=github" alt="GitHub" /></a>
+  <a href="https://github.com/Leosdc/understand-anything-desktop/releases"><img src="https://img.shields.io/badge/Version-v0.3.0-blue" alt="Version" /></a>
   <a href="https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT" /></a>
-  <a href="https://lum.is-a.dev/"><img src="https://img.shields.io/badge/Original_Creator-Luminis-38bdf8" alt="Original Creator" /></a>
+  <a href="https://github.com/Lum1104"><img src="https://img.shields.io/badge/Original_Creator-Yuxiang_Lin_(Lum1104)-38bdf8" alt="Original Creator" /></a>
+</p>
+
+<p align="center">
+  <b><a href="README.md">English</a></b> | 
+  <b><a href="README.pt-BR.md">Português (Brasil)</a></b> | 
+  <b><a href="README.es.md">Español</a></b> | 
+  <b><a href="README.ja.md">日本語</a></b> | 
+  <b><a href="README.zh.md">简体中文</a></b>
 </p>
 
 任意のコードベースをインタラクティブな 知識グラフに変換し、視覚的に探索、検索、および監査します。**Windows 用の、ローカル依存関係のない美しいデスクトップアプリケーションが利用可能になりました！**
@@ -15,7 +24,7 @@
 これは、高く評価されている **Understand Anything** プロジェクトの公式デスクトップラッパーおよびポータブルバージョンです。
 
 > [!IMPORTANT]
-> **クレジットと謝辞：** このデスクトップアプリケーションは、元の開発者である **Luminis** が作成した優れたコードベース分析パイプラインに基づいて構築されています（[https://lum.is-a.dev/](https://lum.is-a.dev/) / [Understand-Anything リポジトリ](https://github.com/Egonex-AI/Understand-Anything)）。私たちは、Python のグラフマージャーをネイティブの TypeScript に移植し、安全な Electron デスクトップ環境を構築することで、ターミナルの依存関係なしにすべてのユーザーがこの強力なツールを利用できるようにしました。
+> **クレジットと謝辞：** このデスクトップアプリケーションは、元の開発者である **Yuxiang Lin** が作成した優れたコードベース分析パイプラインに基づいて構築されています（[@Lum1104](https://github.com/Lum1104) / [Understand-Anything リポジトリ](https://github.com/Lum1104/Understand-Anything)）。私たちは、Python のグラフマージャーをネイティブの TypeScript に移植し、安全な Electron デスクトップ環境を構築することで、ターミナルの依存関係なしにすべてのユーザーがこの強力なツールを利用できるようにしました。
 
 ---
 
@@ -24,7 +33,7 @@
 デスクトップポータブルバージョンは、元のコマンドラインツール（CLI）における使いやすさ、環境構築、およびコスト管理の摩擦を解消するために設計されました。
 
 * **環境構築が不要（ポータブル仕様）**：元のプロジェクトでは、Node.js、Python 3、C++ コンパイラ、および複数の Python ライブラリ（pandas、networkx など）のインストールが必要でした。ポータブル `.exe` 版は、すべての分析スクリプト、パーサー、ノード結合器をネイティブの TypeScript でパッケージ化しています。ダウンロードして即座に実行・分析が可能です。
-* **トークン消費とコストの事前確認**：Gemini や Claude API トークンを消費する前に、デスクトップアプリがフォルダをスキャンし、分析対象ファイル、予測される AI リクエストバッチ、トークン数の見積もりを表示します。ユーザーはこれを確認した上で、続行または中止を決定できます。**また、このモーダル内で `.understandignore` の設定を直接編集し、その場でコストを再計算することも可能です！アプリは Gemini (2.5, 1.5, 2.0) と Claude (Sonnet, Haiku, Opus) の全モデルの選択およびリアルタイムのレート計算をサポートしています。**
+* **トークン消費とコストの事前確認**：Gemini や Claude API トークンを消費する前に、デスクトップアプリがフォルダをスキャンし、分析対象ファイル、予測される AI リクエストバッチ、トークン数の見積もりを表示します。ユーザーはこれを確認した上で、続行または中止を決定できます。**また、このモーダル内で `.understandignore` の設定を直接編集し、その場でコストを再計算することも可能です！アプリは Gemini (3.5, 2.5, 1.5, 2.0) と Claude (Sonnet 4.6, Opus 4.6, Sonnet 3.5, Haiku, Opus) の全モデルの選択およびリアルタイムのレート計算をサポートしています。**
 * **リアルタイムでの実行キャンセル**：分析に時間がかかりすぎている場合やコストが予想を超える場合、ワンクリックで処理を中断できます。バックエンドは直ちにアクティブな API コールを終了し、一時ファイルをクリーンアップします。CLI での `Ctrl+C` による強制終了と異なり、ゾンビプロセスの残存やファイルの破損を防ぎます。
 * **履歴プロジェクト管理（1秒でロード）**：過去に分析した直近 5 つ of コードベースを履歴として記録します。すでにグラフが存在する場合は、UI から 1 秒でビジュアルダッシュボードを読み込めます。再度 AI への問い合わせでトークンを消費したり、ターミナルでパスを入力したりする必要はありません。
 * **動的な多言語同期**：設定画面でアプリの言語を切り替えると、ダッシュボードの構成ファイルも同期して自動更新され、グラフレンダラーに設定言語が即座に反映されます。
@@ -111,4 +120,4 @@ graph TD
 - ⭐️ [GitHub](https://github.com/Leosdc/understand-anything-desktop) でリポジトリにスターを付ける
 - 💡 コードの改善やバグ報告をリポジトリの Issue トラッカーで行う
 
-*このプロジェクトを可能にするオリジナルのパイプラインを作成してくれた **Luminis** に深く感謝します！*
+*このプロジェクトを可能にするオリジナルのパイプラインを作成してくれた **Yuxiang Lin (Lum1104)** に深く感謝します！*
