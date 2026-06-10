@@ -71,5 +71,37 @@ if (srcCore) {
   process.exit(1);
 }
 
+// 4. Copiar as dependências de runtime necessárias do core de node_modules para dist/node_modules
+const coreDependencies = [
+  "zod",
+  "yaml",
+  "fuse.js",
+  "ignore",
+  "web-tree-sitter",
+  "tree-sitter-c-sharp",
+  "tree-sitter-cpp",
+  "tree-sitter-go",
+  "tree-sitter-java",
+  "tree-sitter-javascript",
+  "tree-sitter-php",
+  "tree-sitter-python",
+  "tree-sitter-ruby",
+  "tree-sitter-rust",
+  "tree-sitter-typescript"
+];
+
+console.log("[Copy] Copiando dependências de runtime do core de node_modules...");
+for (const dep of coreDependencies) {
+  const srcDep = path.join(desktopRoot, "node_modules", dep);
+  const destDep = path.join(distDir, "node_modules", dep);
+
+  if (fs.existsSync(srcDep)) {
+    console.log(` - Copiando dependência: ${dep}`);
+    copyDirRecursive(srcDep, destDep);
+  } else {
+    console.warn(`[Warning] Dependência de runtime ${dep} não encontrada em node_modules da raiz.`);
+  }
+}
+
 console.log("[Copy] Cópia de assets concluída com sucesso.");
 
