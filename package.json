@@ -29,6 +29,8 @@
   "dependencies": {
     "express": "^4.21.2",
     "fuse.js": "^7.1.0",
+    "graphology": "~0.26.0",
+    "graphology-communities-louvain": "^2.0.2",
     "ignore": "^7.0.5",
     "lucide-react": "^0.470.0",
     "react": "^19.0.0",
