@@ -4,9 +4,11 @@
   <img src="src/renderer/assets/mascote.png" width="160" alt="Understand Anything マスコット" />
 </p>
 
-[![GitHub](https://img.shields.io/badge/GitHub-Repo-181717?logo=github)](https://github.com/Leosdc/understand-anything-desktop)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE)
-[![Original Creator](https://img.shields.io/badge/Original_Creator-Luminis-38bdf8)](https://lum.is-a.dev/)
+<p align="center">
+  <a href="https://github.com/Leosdc/understand-anything-desktop"><img src="https://img.shields.io/badge/GitHub-Repo-181717?logo=github" alt="GitHub" /></a>
+  <a href="https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT" /></a>
+  <a href="https://lum.is-a.dev/"><img src="https://img.shields.io/badge/Original_Creator-Luminis-38bdf8" alt="Original Creator" /></a>
+</p>
 
 任意のコードベースをインタラクティブな 3D 知識グラフに変換し、視覚的に探索、検索、および監査します。**Windows 用の、ローカル依存関係のない美しいデスクトップアプリケーションが利用可能になりました！**
 
@@ -14,6 +16,36 @@
 
 > [!IMPORTANT]
 > **クレジットと謝辞：** このデスクトップアプリケーションは、元の開発者である **Luminis** が作成した優れたコードベース分析パイプラインに基づいて構築されています（[https://lum.is-a.dev/](https://lum.is-a.dev/) / [Understand-Anything リポジトリ](https://github.com/Egonex-AI/Understand-Anything)）。私たちは、Python のグラフマージャーをネイティブの TypeScript に移植し、安全な Electron デスクトップ環境を構築することで、ターミナルの依存関係なしにすべてのユーザーがこの強力なツールを利用できるようにしました。
+
+---
+
+## 💡 オリジナルの CLI ではなく、デスクトップアプリ (.exe) を使用する理由は？
+
+デスクトップポータブルバージョンは、元のコマンドラインツール（CLI）における使いやすさ、環境構築、およびコスト管理の摩擦を解消するために設計されました。
+
+* **環境構築が不要（ポータブル仕様）**：元のプロジェクトでは、Node.js、Python 3、C++ コンパイラ、および複数の Python ライブラリ（pandas、networkx など）のインストールが必要でした。ポータブル `.exe` 版は、すべての分析スクリプト、パーサー、ノード結合器をネイティブの TypeScript でパッケージ化しています。ダウンロードして即座に実行・分析が可能です。
+* **トークン消費とコストの事前確認**：Gemini や Claude API トークンを消費する前に、デスデスクトップアプリがフォルダをスキャンし、分析対象ファイル、予測される AI リクエストバッチ、トークン数の見積もりを表示します。ユーザーはこれを確認した上で、続行または中止を決定できます。
+* **リアルタイムでの実行キャンセル**：分析に時間がかかりすぎている場合やコストが予想を超える場合、ワンクリックで処理を中断できます。バックエンドは直ちにアクティブな API コールを終了し、一時ファイルをクリーンアップします。CLI での `Ctrl+C` による強制終了と異なり、ゾンビプロセスの残存やファイルの破損を防ぎます。
+* **履歴プロジェクト管理（1秒でロード）**：過去に分析した直近 5 つのコードベースを履歴として記録します。すでにグラフが存在する場合は、UI から 1 秒でビジュアルダッシュボードを読み込めます。再度 AI への問い合わせでトークンを消費したり、ターミナルでパスを入力したりする必要はありません。
+* **動的な多言語同期**：設定画面でアプリの言語を切り替えると、ダッシュボードの構成ファイルも同期して自動更新され、グラフレンダラーに設定言語が即座に反映されます。
+* **安全なローカルサーバー環境**：バックエンドの Express サーバーはローカルでのみ実行され、起動時に生成されるワンタイム暗号トークンによって保護されているため、同一ネットワーク上の他端末からの不正アクセスを完全に遮断します。
+
+### 📊 アーキテクチャとデータフロー
+
+```mermaid
+graph TD
+    User([ユーザーインターフェース]) -->|1. プロジェクトとモデルの選択| Electron[Electron アプリ]
+    Electron -->|2. ローカルオフラインスキャン| Scan[フェーズ 1: ローカルファイルスキャン]
+    Scan -->|3. ファイルのグループ化| Batches[フェーズ 1.5: セマンティックバッチ分割]
+    Batches -->|4. コスト評価| Confirm{コスト確認ダイアログ}
+    Confirm -->|中止| Cancel[クリーンアップとリセット]
+    Confirm -->|続行| IA[フェーズ 2: 順次 AI コード読み込み]
+    IA -->|Gemini / Claude API| LLM((AI モデル))
+    IA -->|5. サブグラフの結合| Merge[フェーズ 3-6: ノード正規化とリンカー]
+    Merge -->|6. JSON データの保存| GraphFile[(knowledge-graph.json)]
+    GraphFile -->|7. ローカル HTTP ポート経由で配信| Express[Express Server + 一次性トークン]
+    Express -->|8. 3D ビジュアルレンダリング| Iframe[埋め込み Webview ダッシュボード]
+```
 
 ---
 

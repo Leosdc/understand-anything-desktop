@@ -18,4 +18,5 @@ __pycache__/
 # Pastas de build e distribuição
 dist/
 dist-package/
+!dashboard/dist/
 
