@@ -9,7 +9,7 @@
     "build:renderer": "vite build",
     "build:main": "esbuild src/main/electron.ts --bundle --platform=node --target=node22 --external:electron --outfile=dist/main/electron.cjs --format=cjs && esbuild src/main/preload.ts --bundle --platform=node --target=node22 --external:electron --outfile=dist/main/preload.cjs --format=cjs && node scripts/copy-assets.js",
     "dev": "concurrently \"npm run dev:renderer\" \"npm run build:main\" \"electron .\"",
-    "build": "npm run build:renderer && npm run build:main && electron-packager . \"Understand Anything\" --platform=win32 --arch=x64 --out=dist-package --overwrite --no-prune --ignore=node_modules"
+    "build": "npm run build:renderer && npm run build:main && electron-packager . \"Understand Anything\" --platform=win32 --arch=x64 --out=dist-package --overwrite --no-prune --ignore=\"^/node_modules($|/)\""
   },
   "build": {
     "appId": "com.understandanything.desktop",
@@ -28,9 +28,24 @@
   },
   "dependencies": {
     "express": "^4.21.2",
+    "fuse.js": "^7.1.0",
+    "ignore": "^7.0.5",
     "lucide-react": "^0.470.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tree-sitter-c-sharp": "^0.23.1",
+    "tree-sitter-cpp": "^0.23.4",
+    "tree-sitter-go": "^0.25.0",
+    "tree-sitter-java": "^0.23.5",
+    "tree-sitter-javascript": "^0.25.0",
+    "tree-sitter-php": "^0.23.11",
+    "tree-sitter-python": "^0.25.0",
+    "tree-sitter-ruby": "^0.23.1",
+    "tree-sitter-rust": "^0.24.0",
+    "tree-sitter-typescript": "^0.23.2",
+    "web-tree-sitter": "^0.26.6",
+    "yaml": "^2.8.3",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
