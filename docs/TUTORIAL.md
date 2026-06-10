@@ -14,7 +14,19 @@ Understand Anything uses advanced Large Language Models (LLMs) to read, categori
 2. **Configure the App**:
    - Paste the key in the **API Key** input box.
    - Choose your provider (**Google Gemini AI** or **Anthropic Claude**).
-   - Select the target model. *Flash* models (like `gemini-2.5-flash` or `claude-3-5-haiku`) are perfect for general analysis and cost less. *Pro/Sonnet* models provide deeper reasoning but are more expensive.
+   - Select the target model:
+     * **Google Gemini Models**:
+       - `gemini-2.5-flash` (Default fast & affordable) — Input: $0.075 / 1M, Output: $0.30 / 1M.
+       - `gemini-2.5-pro` (High intelligence) — Input: $1.25 / 1M, Output: $5.00 / 1M.
+       - `gemini-1.5-flash` (Legacy fast) — Input: $0.075 / 1M, Output: $0.30 / 1M.
+       - `gemini-1.5-pro` (Legacy reasoning) — Input: $1.25 / 1M, Output: $5.00 / 1M.
+       - `gemini-2.0-flash-exp` (Preview experimental) — Input: $0.075 / 1M, Output: $0.30 / 1M.
+     * **Anthropic Claude Models**:
+       - `claude-3-5-sonnet-20241022` (Sonnet v2 - Default balance) — Input: $3.00 / 1M, Output: $15.00 / 1M.
+       - `claude-3-5-haiku-20241022` (Haiku v2 - Fast & economic) — Input: $0.80 / 1M, Output: $4.00 / 1M.
+       - `claude-3-opus-20240229` (Opus - Maximum reasoning & high cost) — Input: $15.00 / 1M, Output: $75.00 / 1M.
+       - `claude-3-sonnet-20240229` (Legacy medium) — Input: $3.00 / 1M, Output: $15.00 / 1M.
+       - `claude-3-haiku-20240307` (Legacy fast) — Input: $0.25 / 1M, Output: $1.25 / 1M.
 
 ---
 
@@ -25,6 +37,9 @@ Because Phase 2 reads the actual text of files using the LLM, running the analyz
 ### What is the ignore file?
 The `.understandignore` is a text file located inside your project folder at:
 `[your-project-folder]/.understand-anything/.understandignore`
+
+> [!IMPORTANT]
+> **Automatic Exclusions & Generation**: If this file does not exist in your repository, the application's backend **automatically creates it on the first run** (during Phase 0.5) with highly optimized default rules (ignoring `node_modules/`, `dist/`, `.git/`, builds, logs, and lock files) to protect your wallet from massive, accidental token charges. You can then view, modify, and add custom paths at any time.
 
 Any file or folder pattern matched in this file will be completely skipped during the scan phase and will **not** be sent to the AI.
 
