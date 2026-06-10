@@ -14,7 +14,19 @@ Understand Anything utiliza Modelos de Lenguaje de Gran Escala (LLMs) para leer,
 2. **Configurar la Aplicación**:
    - Pegue la clave en el campo **API Key**.
    - Elija el proveedor correspondiente (**Google Gemini AI** o **Anthropic Claude**).
-   - Seleccione el modelo deseado. Los modelos de la línea *Flash* (como `gemini-2.5-flash` o `claude-3-5-haiku`) son ideales para análisis generales y son extremadamente baratos. Los modelos *Pro/Sonnet* ofrecen razonamiento más profundo, pero consumen más tokens de su saldo de API.
+   - Seleccione el modelo deseado:
+     * **Modelos de Google Gemini**:
+       - `gemini-2.5-flash` (Predeterminado rápido & económico) — Entrada: $0.075 / 1M, Salida: $0.30 / 1M.
+       - `gemini-2.5-pro` (Alta inteligencia) — Entrada: $1.25 / 1M, Salida: $5.00 / 1M.
+       - `gemini-1.5-flash` (Legado rápido) — Entrada: $0.075 / 1M, Salida: $0.30 / 1M.
+       - `gemini-1.5-pro` (Legado avanzado) — Entrada: $1.25 / 1M, Salida: $5.00 / 1M.
+       - `gemini-2.0-flash-exp` (Preview experimental) — Entrada: $0.075 / 1M, Salida: $0.30 / 1M.
+     * **Modelos de Anthropic Claude**:
+       - `claude-3-5-sonnet-20241022` (Sonnet v2 - Equilibrio estándar) — Entrada: $3.00 / 1M, Salida: $15.00 / 1M.
+       - `claude-3-5-haiku-20241022` (Haiku v2 - Rápido & económico) — Entrada: $0.80 / 1M, Salida: $4.00 / 1M.
+       - `claude-3-opus-20240229` (Opus - Razonamiento máximo & costo alto) — Entrada: $15.00 / 1M, Salida: $75.00 / 1M.
+       - `claude-3-sonnet-20240229` (Legado medio) — Entrada: $3.00 / 1M, Salida: $15.00 / 1M.
+       - `claude-3-haiku-20240307` (Legado rápido) — Entrada: $0.25 / 1M, Salida: $1.25 / 1M.
 
 ---
 
@@ -25,6 +37,9 @@ Debido a que la Fase 2 lee el contenido textual real de los archivos de su repos
 ### ¿Qué es el archivo de ignore?
 El `.understandignore` es un archivo de texto simple ubicado en el directorio:
 `[carpeta-raiz-de-su-proyecto]/.understand-anything/.understandignore`
+
+> [!IMPORTANT]
+> **Exclusiones y Generación Automática**: Si este archivo no existe en su repositorio, el backend de la aplicación **lo creará automáticamente en la primera ejecución** (durante la Fase 0.5) con reglas predeterminadas altamente optimizadas (ignorando `node_modules/`, `dist/`, `.git/`, compilaciones, registros y lock files) para proteger su presupuesto de cobros masivos accidentales. Puede ver, modificar y agregar nuevas reglas en cualquier momento.
 
 Cualquier archivo o directorio que coincida con los patrones descritos en este archivo se omitirá por completo durante el escaneo y **no** se enviará para lectura de la IA.
 
