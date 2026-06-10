@@ -22,11 +22,11 @@ jobs:
       - name: Clone and build plugin core
         run: |
           git clone https://github.com/Lum1104/Understand-Anything.git temp-plugin
-          cd temp-plugin/packages/core
+          cd temp-plugin/understand-anything-plugin/packages/core
           npm install
           npx tsc
-          mkdir -p ../../../packages/core
-          cp -r dist ../../../packages/core/dist
+          mkdir -p ../../../../packages/core
+          cp -r dist ../../../../packages/core/dist
         shell: bash
 
       - name: Install dependencies
