@@ -14,7 +14,19 @@ O Understand Anything utiliza Modelos de Linguagem de Grande Porte (LLMs) para l
 2. **Configurar o Aplicativo**:
    - Cole a chave gerada no campo **API Key**.
    - Escolha o provedor correspondente (**Google Gemini AI** ou **Anthropic Claude**).
-   - Selecione o modelo desejado. Modelos da linha *Flash* (como `gemini-2.5-flash` ou `claude-3-5-haiku`) são ideais para análises gerais e são extremamente baratos. Modelos *Pro/Sonnet* oferecem raciocínio mais profundo, mas consomem muito mais créditos.
+   - Selecione o modelo desejado:
+     * **Modelos do Google Gemini**:
+       - `gemini-2.5-flash` (Padrão rápido & econômico) — Entrada: $0.075 / 1M, Saída: $0.30 / 1M.
+       - `gemini-2.5-pro` (Alta inteligência) — Entrada: $1.25 / 1M, Saída: $5.00 / 1M.
+       - `gemini-1.5-flash` (Legado rápido) — Entrada: $0.075 / 1M, Saída: $0.30 / 1M.
+       - `gemini-1.5-pro` (Legado avançado) — Entrada: $1.25 / 1M, Saída: $5.00 / 1M.
+       - `gemini-2.0-flash-exp` (Preview experimental) — Entrada: $0.075 / 1M, Saída: $0.30 / 1M.
+     * **Modelos do Anthropic Claude**:
+       - `claude-3-5-sonnet-20241022` (Sonnet v2 - Equilíbrio padrão) — Entrada: $3.00 / 1M, Saída: $15.00 / 1M.
+       - `claude-3-5-haiku-20241022` (Haiku v2 - Rápido & econômico) — Entrada: $0.80 / 1M, Saída: $4.00 / 1M.
+       - `claude-3-opus-20240229` (Opus - Raciocínio máximo & custo alto) — Entrada: $15.00 / 1M, Saída: $75.00 / 1M.
+       - `claude-3-sonnet-20240229` (Legado médio) — Entrada: $3.00 / 1M, Saída: $15.00 / 1M.
+       - `claude-3-haiku-20240307` (Legado rápido) — Entrada: $0.25 / 1M, Saída: $1.25 / 1M.
 
 ---
 
@@ -25,6 +37,9 @@ Como a Fase 2 lê o conteúdo textual real dos arquivos do seu repositório usan
 ### O que é o arquivo de ignore?
 O `.understandignore` é um arquivo de texto simples que fica localizado no diretório:
 `[pasta-raiz-do-seu-projeto]/.understand-anything/.understandignore`
+
+> [!IMPORTANT]
+> **Exclusões & Geração Automática**: Se este arquivo não existir em seu repositório, o backend do aplicativo **irá criá-lo automaticamente na primeira execução** (durante a Fase 0.5) com regras padrão altamente otimizadas (ignorando `node_modules/`, `dist/`, `.git/`, builds, logs e locks) para proteger seu bolso de cobranças acidentais massivas. Você pode visualizar, alterar e adicionar novas regras a qualquer momento.
 
 Qualquer arquivo ou diretório que corresponda aos padrões descritos neste arquivo será totalmente desconsiderado durante o escaneamento e **não** será enviado para leitura da IA.
 
