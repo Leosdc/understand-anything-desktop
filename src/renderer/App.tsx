@@ -331,6 +331,7 @@ export default function App() {
 
   const recalculatingRef = useRef(false);
   const [ignoreContent, setIgnoreContent] = useState("");
+  const [hasSavedIgnore, setHasSavedIgnore] = useState(false);
 
   const [analysisError, setAnalysisError] = useState("");
   const [progress, setProgress] = useState<ProgressState>({
@@ -458,6 +459,7 @@ export default function App() {
     setAnalysisError("");
     setLogs([]);
     setCostDetail(null);
+    setHasSavedIgnore(false);
     setView("progress");
     setProgress({
       phase: 0,
@@ -1129,94 +1131,129 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Coluna Direita: Editor do Ignore */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px", borderLeft: "1px solid var(--panel-border)", paddingLeft: "32px" }}>
-                <div>
-                  <h3 style={{ fontSize: "1.05rem", fontWeight: 600, marginBottom: "4px", display: "flex", alignItems: "center", gap: "8px" }}>
-                    <Folder size={16} color="var(--primary)" />
-                    {t.ignoreTitle}
-                  </h3>
-                  <p style={{ fontSize: "0.75rem", color: "var(--text-secondary)", lineHeight: "1.4" }}>
-                    {t.ignoreHelp}
-                  </p>
-                </div>
-
-                <textarea
-                  className="input-control"
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.8rem",
-                    height: "140px",
-                    resize: "none",
-                    background: "rgba(0, 0, 0, 0.3)",
-                    border: "1px solid var(--panel-border)",
-                    padding: "10px",
-                    borderRadius: "6px"
-                  }}
-                  placeholder={t.ignorePlaceholder}
-                  value={ignoreContent}
-                  onChange={(e) => setIgnoreContent(e.target.value)}
-                />
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>{t.ignoreRecommended}</span>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                    {["node_modules/", "dist/", "build/", "out/", ".git/", "*.lock", "*.zip", "*.mp4"].map((rule) => (
-                      <button
-                        key={rule}
-                        type="button"
-                        onClick={() => {
-                          const trimmed = ignoreContent.trim();
-                          const lines = trimmed ? trimmed.split("\n") : [];
-                          if (!lines.includes(rule) && !lines.includes(rule.slice(0, -1))) {
-                            const newContent = trimmed ? trimmed + "\n" + rule : rule;
-                            setIgnoreContent(newContent);
-                          }
-                        }}
-                        style={{
-                          background: "rgba(255, 255, 255, 0.05)",
-                          border: "1px solid var(--panel-border)",
-                          borderRadius: "4px",
-                          padding: "3px 8px",
-                          fontSize: "0.7rem",
-                          color: "var(--text-secondary)",
-                          cursor: "pointer",
-                          transition: "all 0.15s ease"
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)"}
-                        onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)"}
-                      >
-                        +{rule}
-                      </button>
-                    ))}
+              {/* Coluna Direita: Editor do Ignore ou Painel de Regras Ativas */}
+              {hasSavedIgnore ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: "16px", borderLeft: "1px solid var(--panel-border)", paddingLeft: "32px", height: "100%", justifyContent: "center" }}>
+                  <div style={{ background: "rgba(168, 85, 247, 0.08)", border: "1px solid rgba(168, 85, 247, 0.25)", borderRadius: "8px", padding: "20px" }}>
+                    <h3 style={{ fontSize: "1.05rem", fontWeight: 600, color: "#fff", display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
+                      <CheckCircle size={18} color="var(--success)" />
+                      Ignore Configurado
+                    </h3>
+                    <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "12px", lineHeight: "1.4" }}>
+                      As regras de exclusão foram salvas com sucesso no arquivo `.understandignore`. Os arquivos listados abaixo estão sendo ignorados para esta análise:
+                    </p>
+                    
+                    <div style={{ maxHeight: "160px", overflowY: "auto", background: "rgba(0, 0, 0, 0.25)", borderRadius: "6px", padding: "10px", border: "1px solid var(--panel-border)" }}>
+                      {ignoreContent.split("\n").map(line => line.trim()).filter(line => line && !line.startsWith("#")).length > 0 ? (
+                        <ul style={{ paddingLeft: "16px", margin: 0, display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.8rem", fontFamily: "var(--font-mono)", color: "var(--text-secondary)" }}>
+                          {ignoreContent.split("\n").map(line => line.trim()).filter(line => line && !line.startsWith("#")).map((rule, i) => (
+                            <li key={i} style={{ wordBreak: "break-all" }}>{rule}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontStyle: "italic" }}>Nenhuma regra de exclusão ativa.</span>
+                      )}
+                    </div>
+                    
+                    <button 
+                      type="button"
+                      onClick={() => setHasSavedIgnore(false)}
+                      style={{ marginTop: "16px", background: "transparent", border: "none", color: "var(--primary)", cursor: "pointer", fontSize: "0.8rem", textDecoration: "underline", padding: 0 }}
+                    >
+                      Editar regras de exclusão
+                    </button>
                   </div>
                 </div>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px", borderLeft: "1px solid var(--panel-border)", paddingLeft: "32px" }}>
+                  <div>
+                    <h3 style={{ fontSize: "1.05rem", fontWeight: 600, marginBottom: "4px", display: "flex", alignItems: "center", gap: "8px" }}>
+                      <Folder size={16} color="var(--primary)" />
+                      {t.ignoreTitle}
+                    </h3>
+                    <p style={{ fontSize: "0.75rem", color: "var(--text-secondary)", lineHeight: "1.4" }}>
+                      {t.ignoreHelp}
+                    </p>
+                  </div>
 
-                <button
-                  className="btn btn-secondary"
-                  style={{
-                    marginTop: "8px",
-                    background: "linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)",
-                    border: "1px solid rgba(168, 85, 247, 0.4)",
-                    color: "#fff",
-                    gap: "8px",
-                    width: "100%",
-                    justifyContent: "center",
-                    fontWeight: 600
-                  }}
-                  onClick={async () => {
-                    recalculatingRef.current = true;
-                    // Salvar o arquivo via IPC
-                    await window.api.saveIgnoreFile(projectPath, ignoreContent);
-                    // Cancelar análise ativa silenciosamente para recarregar
-                    setCostDetail(null);
-                    await window.api.confirmAnalysis(false);
-                  }}
-                >
-                  <RefreshCw size={14} />
-                  {t.saveRecalculate}
-                </button>
-              </div>
+                  <textarea
+                    className="input-control"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.8rem",
+                      height: "140px",
+                      resize: "none",
+                      background: "rgba(0, 0, 0, 0.3)",
+                      border: "1px solid var(--panel-border)",
+                      padding: "10px",
+                      borderRadius: "6px"
+                    }}
+                    placeholder={t.ignorePlaceholder}
+                    value={ignoreContent}
+                    onChange={(e) => setIgnoreContent(e.target.value)}
+                  />
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>{t.ignoreRecommended}</span>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                      {["node_modules/", "dist/", "build/", "out/", ".git/", "*.lock", "*.zip", "*.mp4"].map((rule) => (
+                        <button
+                          key={rule}
+                          type="button"
+                          onClick={() => {
+                            const trimmed = ignoreContent.trim();
+                            const lines = trimmed ? trimmed.split("\n") : [];
+                            if (!lines.includes(rule) && !lines.includes(rule.slice(0, -1))) {
+                              const newContent = trimmed ? trimmed + "\n" + rule : rule;
+                              setIgnoreContent(newContent);
+                            }
+                          }}
+                          style={{
+                            background: "rgba(255, 255, 255, 0.05)",
+                            border: "1px solid var(--panel-border)",
+                            borderRadius: "4px",
+                            padding: "3px 8px",
+                            fontSize: "0.7rem",
+                            color: "var(--text-secondary)",
+                            cursor: "pointer",
+                            transition: "all 0.15s ease"
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)"}
+                          onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)"}
+                        >
+                          +{rule}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    className="btn btn-secondary"
+                    style={{
+                      marginTop: "8px",
+                      background: "linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)",
+                      border: "1px solid rgba(168, 85, 247, 0.4)",
+                      color: "#fff",
+                      gap: "8px",
+                      width: "100%",
+                      justifyContent: "center",
+                      fontWeight: 600
+                    }}
+                    onClick={async () => {
+                      recalculatingRef.current = true;
+                      // Salvar o arquivo via IPC
+                      await window.api.saveIgnoreFile(projectPath, ignoreContent);
+                      setHasSavedIgnore(true);
+                      // Cancelar análise ativa silenciosamente para recarregar
+                      setCostDetail(null);
+                      await window.api.confirmAnalysis(false);
+                    }}
+                  >
+                    <RefreshCw size={14} />
+                    {t.saveRecalculate}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
