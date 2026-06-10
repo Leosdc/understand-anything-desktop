@@ -6,8 +6,17 @@
 
 <p align="center">
   <a href="https://github.com/Leosdc/understand-anything-desktop"><img src="https://img.shields.io/badge/GitHub-Repo-181717?logo=github" alt="GitHub" /></a>
+  <a href="https://github.com/Leosdc/understand-anything-desktop/releases"><img src="https://img.shields.io/badge/Vers%C3%A3o-v0.3.0-blue" alt="Versão" /></a>
   <a href="https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT" /></a>
-  <a href="https://lum.is-a.dev/"><img src="https://img.shields.io/badge/Criador_Original-Luminis-38bdf8" alt="Criador Original" /></a>
+  <a href="https://github.com/Lum1104"><img src="https://img.shields.io/badge/Criador_Original-Yuxiang_Lin_(Lum1104)-38bdf8" alt="Criador Original" /></a>
+</p>
+
+<p align="center">
+  <b><a href="README.md">English</a></b> | 
+  <b><a href="README.pt-BR.md">Português (Brasil)</a></b> | 
+  <b><a href="README.es.md">Español</a></b> | 
+  <b><a href="README.ja.md">日本語</a></b> | 
+  <b><a href="README.zh.md">简体中文</a></b>
 </p>
 
 Transforme qualquer base de código em um grafo de conhecimento interativo para explorar visualmente, pesquisar e auditar. **Agora com um aplicativo desktop para Windows bonito e sem dependências locais!**
@@ -15,7 +24,7 @@ Transforme qualquer base de código em um grafo de conhecimento interativo para 
 Este é o empacotamento oficial de desktop e versão portátil do aclamado projeto **Understand Anything**.
 
 > [!IMPORTANT]
-> **Créditos & Agradecimentos:** Este aplicativo desktop é construído sobre o excepcional pipeline de análise de código criado pelo desenvolvedor original, **Luminis** ([https://lum.is-a.dev/](https://lum.is-a.dev/) / [Repositório Understand-Anything](https://github.com/Egonex-AI/Understand-Anything)). Nós portamos os mescladores de grafo escritos em Python para TypeScript nativo e criamos um ambiente seguro em Electron para tornar esta ferramenta incrível acessível a todos sem dependências de terminal ou interpretadores locais.
+> **Créditos & Agradecimentos:** Este aplicativo desktop é construído sobre o excepcional pipeline de análise de código criado pelo desenvolvedor original, **Yuxiang Lin** ([@Lum1104](https://github.com/Lum1104) / [Repositório Understand-Anything](https://github.com/Lum1104/Understand-Anything)). Nós portamos os mescladores de grafo escritos em Python para TypeScript nativo e criamos um ambiente seguro em Electron para tornar esta ferramenta incrível acessível a todos sem dependências de terminal ou interpretadores locais.
 
 ---
 
@@ -24,7 +33,7 @@ Este é o empacotamento oficial de desktop e versão portátil do aclamado proje
 A versão portátil de desktop foi projetada para eliminar diversas fricções de usabilidade, configuração de ambiente e controle de custos que existiam no script de terminal original:
 
 * **Zero Configuração de Ambiente (Portátil)**: O projeto original exigia a instalação global do Node.js, Python 3, compiladores C++ e várias bibliotecas Python pesadas (pandas, networkx, etc.). O `.exe` agrupa todos os scripts de análise, interpretadores e mescladores em TypeScript nativo de forma isolada. É só baixar, rodar e analisar imediatamente.
-* **Avaliação Prévia de Custo de Tokens**: Antes de gastar créditos nas APIs do Gemini ou Claude, o App Desktop faz uma varredura estática no seu projeto e exibe um resumo detalhado de arquivos, estimativa de lotes de envio e projeção de tokens, permitindo decidir se deseja continuar ou abortar. **Você pode editar as regras do `.understandignore` diretamente nesse modal e recalcular os custos na hora! O app suporta o catálogo completo de modelos Gemini (2.5, 1.5, 2.0) e Claude (Sonnet, Haiku, Opus) com estimativas precisas de tokens.**
+* **Avaliação Prévia de Custo de Tokens**: Antes de gastar créditos nas APIs do Gemini ou Claude, o App Desktop faz uma varredura estática no seu projeto e exibe um resumo detalhado de arquivos, estimativa de lotes de envio e projeção de tokens, permitindo decidir se deseja continuar ou abortar. **Você pode editar as regras do `.understandignore` diretamente nesse modal e recalcular os custos na hora! O app suporta o catálogo completo de modelos Gemini (3.5, 2.5, 1.5, 2.0) e Claude (Sonnet 4.6, Opus 4.6, Sonnet 3.5, Haiku, Opus) com estimativas precisas de tokens.**
 * **Cancelamento Ativo em Tempo Real**: Se a análise estiver demorando muito ou custando mais do que o esperado, você pode interrompê-la com um clique. O backend cancela as chamadas de IA pendentes e limpa arquivos temporários na hora. Na CLI, forçar a parada com `Ctrl+C` deixava processos fantasmas no sistema operacional e arquivos corrompidos.
 * **Histórico de Projetos Recentes (Carregamento em 1s)**: O app mantém um histórico dos últimos 5 repositórios analisados. Se o projeto já possuir um grafo gerado anteriormente, você pode abri-lo instantaneamente pela interface gráfica em 1 segundo, sem consumir novos tokens de IA ou precisar digitar caminhos de pastas no terminal.
 * **Sincronização Dinâmica de Idiomas**: Altere o idioma do aplicativo a qualquer momento. A interface salva e atualiza a configuração do projeto atual de forma síncrona para que o dashboard de renderização reflita o idioma escolhido imediatamente.
@@ -112,4 +121,4 @@ Se você achar este aplicativo desktop portátil útil, por favor considere:
 - ⭐️ Deixar uma estrela no repositório no [GitHub](https://github.com/Leosdc/understand-anything-desktop)
 - 💡 Contribuir com melhorias de código ou reportar bugs no tracker do repositório.
 
-*Agradecimento especial ao **Luminis** por criar o pipeline original que torna este projeto possível!*
+*Agradecimento especial a **Yuxiang Lin (Lum1104)** por criar o pipeline original que torna este projeto possível!*
