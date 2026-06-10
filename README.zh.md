@@ -6,8 +6,17 @@
 
 <p align="center">
   <a href="https://github.com/Leosdc/understand-anything-desktop"><img src="https://img.shields.io/badge/GitHub-Repo-181717?logo=github" alt="GitHub" /></a>
+  <a href="https://github.com/Leosdc/understand-anything-desktop/releases"><img src="https://img.shields.io/badge/Version-v0.3.0-blue" alt="Version" /></a>
   <a href="https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT" /></a>
-  <a href="https://lum.is-a.dev/"><img src="https://img.shields.io/badge/Original_Creator-Luminis-38bdf8" alt="Original Creator" /></a>
+  <a href="https://github.com/Lum1104"><img src="https://img.shields.io/badge/Original_Creator-Yuxiang_Lin_(Lum1104)-38bdf8" alt="Original Creator" /></a>
+</p>
+
+<p align="center">
+  <b><a href="README.md">English</a></b> | 
+  <b><a href="README.pt-BR.md">Português (Brasil)</a></b> | 
+  <b><a href="README.es.md">Español</a></b> | 
+  <b><a href="README.ja.md">日本語</a></b> | 
+  <b><a href="README.zh.md">简体中文</a></b>
 </p>
 
 将任何代码库转换为交互式的 知识图谱，以进行可视化探索、搜索和审计。**现在配备了美观、零本地依赖的 Windows 桌面端应用程序！**
@@ -15,7 +24,7 @@
 这是备受瞩目的 **Understand Anything** 项目的官方桌面包装器及便携版本。
 
 > [!IMPORTANT]
-> **致谢与鸣谢：** 本桌面应用程序基于原作者 **Luminis** 开发的卓越代码库分析流水线构建（[https://lum.is-a.dev/](https://lum.is-a.dev/) / [Understand-Anything 仓库](https://github.com/Egonex-AI/Understand-Anything)）。我们将 Python 编写 institutional 图谱合并程序移植为原生 TypeScript，并构建了安全的 Electron 桌面环境，使用户无需安装复杂的终端依赖或本地语言环境即可使用此强大工具。
+> **致谢与鸣谢：** 本桌面应用程序基于原作者 **Yuxiang Lin** 开发的卓越代码库分析流水线构建（[@Lum1104](https://github.com/Lum1104) / [Understand-Anything 仓库](https://github.com/Lum1104/Understand-Anything)）。我们将 Python 编写的图谱合并程序移植为原生 TypeScript，并构建了安全的 Electron 桌面环境，使用户无需安装复杂的终端依赖或本地语言环境即可使用此强大工具。
 
 ---
 
@@ -24,7 +33,7 @@
 桌面端便携版本旨在解决原始命令行工具（CLI）中存在的易用性差、环境配置繁琐和成本控制难等痛点：
 
 * **零环境配置（即开即用）**：原始项目需要安装全局 Node.js、Python 3、C++ 编译器以及多个复杂的 Python 依赖库（如 pandas、networkx 等）。桌面端 `.exe` 文件将所有分析脚本、解析器和节点合并工具封装在原生 TypeScript 中。只需下载并直接运行，即可立即开始分析。
-* **费用估算与 Token 限制**：在消耗 Gemini 或 Claude API 额度之前，桌面端应用会首先扫描您的代码库文件夹，并显示待分析文件数、预计 AI 请求批次及 Token 估算总结，供您选择继续或取消。**您也可以直接在此弹窗中编辑 `.understandignore` 排除规则，并实时重新计算费用！应用支持完整的 Gemini (2.5, 1.5, 2.0) 和 Claude (Sonnet, Haiku, Opus) 模型选择与精准费用估算。**
+* **费用估算与 Token 限制**：在消耗 Gemini 或 Claude API 额度之前，桌面端应用会首先扫描您的代码库文件夹，并显示待分析文件数、预计 AI 请求批次及 Token 估算总结，供您选择继续或取消。**您也可以直接在此弹窗中编辑 `.understandignore` 排除规则，并实时重新计算费用！应用支持完整的 Gemini (3.5, 2.5, 1.5, 2.0) 和 Claude (Sonnet 4.6, Opus 4.6, Sonnet 3.5, Haiku, Opus) 模型选择与精准费用估算。**
 * **实时主动取消**：若分析时间过长或费用超出预期，您可随时一键取消。后端会立即终止挂起的 AI 请求并清理本地临时文件。而在 CLI 中强行按下 `Ctrl+C` 往往会导致后台残留孤立进程或产生损坏的图谱文件。
 * **历史最近项目（1秒加载）**：自动记录您最近分析的 5 个代码库。如果项目已生成过图谱，您只需在 UI 中点击即可在 1 秒内直接打开可视化面板，无需再次分析消耗 AI Token，也不必每次手动输入终端路径。
 * **动态多语言同步**：随时在设置面板切换软件语言。桌面端会自动同步修改当前活动项目的配置文件，使 渲染面板能立即切换至您偏好的语言显示。
@@ -113,4 +122,4 @@ graph TD
 - ⭐️ 在 [GitHub](https://github.com/Leosdc/understand-anything-desktop) 上为本仓库点亮星星。
 - 💡 贡献代码改进，或在仓库的 Issue 跟踪器中反馈 bug。
 
-*特别鸣谢 **Luminis** 创造了使该项目成为可能的核心分析分析流水线！*
+*特别鸣谢 **Yuxiang Lin (Lum1104)** 创造了使该项目成为可能的核心分析分析流水线！*
