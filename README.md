@@ -24,7 +24,7 @@ This is the official desktop wrapper and portable version of the acclaimed **Und
 The desktop portable version was designed to solve several usability, environment setup, and cost control friction points of the original CLI:
 
 * **Zero Environment Setup (Portable)**: The original project required Node.js, Python 3, C++ compilers, and several Python libraries (pandas, networkx, etc.). The `.exe` bundles all analysis scripts, parsers, and node linkers in native TypeScript. Download, run, and analyze immediately.
-* **Cost Appraisal & Token Estimates**: Before spending your money on Gemini or Claude API tokens, the Desktop App scans your folder and displays a summary of the files, estimated AI request batches, and tokens, allowing you to proceed or cancel.
+* **Cost Appraisal & Token Estimates**: Before spending your money on Gemini or Claude API tokens, the Desktop App scans your folder and displays a summary of the files, estimated AI request batches, and tokens, allowing you to proceed or cancel. **You can edit the `.understandignore` rules directly inside this dialog and recalculate the costs on the fly!**
 * **Real-time Cancellation**: If an analysis is taking too long or costing too much, you can cancel it with one click. The backend halts active API calls and cleans up temporary files immediately. In the CLI, killing with `Ctrl+C` could leave rogue processes and corrupted files.
 * **Recent Projects History (1-Second Loading)**: Keep a list of your last 5 analyzed codebases. Load their visual graph instantly from the UI without performing a new analysis or writing terminal command paths.
 * **Dynamic Multi-Language Sync**: Switch the interface language dynamically. The app automatically updates your active project configuration so that the rendering dashboard matches your preferred language immediately.
@@ -37,10 +37,11 @@ The desktop portable version was designed to solve several usability, environmen
 Because **Understand Anything** reads the actual logic of your codebase (Phase 2) to build its semantic knowledge graph, analyzing heavy third-party directories or built assets can consume excessive AI API tokens. 
 
 To prevent unnecessary costs:
-1. Inside your project folder, locate or create the `.understand-anything/` directory.
-2. Create or edit a file named `.understandignore` inside that folder.
-3. Add glob patterns for files and directories you want to ignore (e.g. `node_modules/`, `dist/`, `.git/`, logs, images).
-4. For a complete detailed setup and advanced rules, check out the comprehensive [TUTORIAL.md](file:///c:/Users/PC/Documents/Bots/Understand-Anything/docs/TUTORIAL.md)!
+1. **Live Ignore Editor**: You can create or edit your `.understandignore` patterns directly inside the cost estimation modal before proceeding.
+2. Alternatively, inside your project folder, locate or create the `.understand-anything/` directory.
+3. Create or edit a file named `.understandignore` inside that folder.
+4. Add glob patterns for files and directories you want to ignore (e.g. `node_modules/`, `dist/`, `.git/`, logs, images).
+5. For a complete detailed setup and advanced rules, check out the comprehensive [TUTORIAL.md](file:///c:/Users/PC/Documents/Bots/Understand-Anything/docs/TUTORIAL.md)!
 
 ---
 
