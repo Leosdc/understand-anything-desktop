@@ -449,17 +449,21 @@ export default function App() {
   };
 
   // Iniciar o pipeline de análise
-  const handleStartAnalysis = async () => {
+  const handleStartAnalysis = async (isRecalculating?: boolean | any) => {
     if (!projectPath) return;
     if (!apiKey) {
       setAnalysisError(t.apiKeyRequired);
       return;
     }
 
+    const recalculating = isRecalculating === true;
+
     setAnalysisError("");
     setLogs([]);
     setCostDetail(null);
-    setHasSavedIgnore(false);
+    if (!recalculating) {
+      setHasSavedIgnore(false);
+    }
     setView("progress");
     setProgress({
       phase: 0,
@@ -482,7 +486,7 @@ export default function App() {
     } else {
       if (recalculatingRef.current) {
         recalculatingRef.current = false;
-        handleStartAnalysis();
+        handleStartAnalysis(true);
         return;
       }
       setAnalysisError(result.error || "Erro desconhecido durante o processamento do grafo.");
@@ -628,6 +632,7 @@ export default function App() {
                 >
                   {apiProvider === "gemini" ? (
                     <>
+                      <option value="gemini-3.5-flash">Gemini 3.5 Flash (Mais Novo Rápido)</option>
                       <option value="gemini-2.5-flash">Gemini 2.5 Flash (Padrão Rápido)</option>
                       <option value="gemini-2.5-pro">Gemini 2.5 Pro (Altíssima Inteligência)</option>
                       <option value="gemini-1.5-flash">Gemini 1.5 Flash (Legado Rápido)</option>
@@ -636,6 +641,8 @@ export default function App() {
                     </>
                   ) : (
                     <>
+                      <option value="claude-sonnet-4-6">Claude 4.6 Sonnet (Mais Novo Inteligente)</option>
+                      <option value="claude-opus-4-6">Claude 4.6 Opus (Mais Novo Complexo)</option>
                       <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet v2 (Padrão Inteligência)</option>
                       <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku (Rápido & Econômico)</option>
                       <option value="claude-3-opus-20240229">Claude 3 Opus (Máxima Complexidade)</option>
@@ -1133,32 +1140,21 @@ export default function App() {
 
               {/* Coluna Direita: Editor do Ignore ou Painel de Regras Ativas */}
               {hasSavedIgnore ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px", borderLeft: "1px solid var(--panel-border)", paddingLeft: "32px", height: "100%", justifyContent: "center" }}>
-                  <div style={{ background: "rgba(168, 85, 247, 0.08)", border: "1px solid rgba(168, 85, 247, 0.25)", borderRadius: "8px", padding: "20px" }}>
-                    <h3 style={{ fontSize: "1.05rem", fontWeight: 600, color: "#fff", display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
-                      <CheckCircle size={18} color="var(--success)" />
-                      Ignore Configurado
-                    </h3>
-                    <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "12px", lineHeight: "1.4" }}>
-                      As regras de exclusão foram salvas com sucesso no arquivo `.understandignore`. Os arquivos listados abaixo estão sendo ignorados para esta análise:
-                    </p>
-                    
-                    <div style={{ maxHeight: "160px", overflowY: "auto", background: "rgba(0, 0, 0, 0.25)", borderRadius: "6px", padding: "10px", border: "1px solid var(--panel-border)" }}>
-                      {ignoreContent.split("\n").map(line => line.trim()).filter(line => line && !line.startsWith("#")).length > 0 ? (
-                        <ul style={{ paddingLeft: "16px", margin: 0, display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.8rem", fontFamily: "var(--font-mono)", color: "var(--text-secondary)" }}>
-                          {ignoreContent.split("\n").map(line => line.trim()).filter(line => line && !line.startsWith("#")).map((rule, i) => (
-                            <li key={i} style={{ wordBreak: "break-all" }}>{rule}</li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontStyle: "italic" }}>Nenhuma regra de exclusão ativa.</span>
-                      )}
+                <div style={{ display: "flex", flexDirection: "column", gap: "16px", borderLeft: "1px solid var(--panel-border)", paddingLeft: "32px", height: "100%", justifyContent: "center", alignItems: "center", textAlign: "center" }}>
+                  <div style={{ background: "rgba(34, 197, 94, 0.08)", border: "1px solid rgba(34, 197, 94, 0.25)", borderRadius: "12px", padding: "32px 24px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                    <div style={{ background: "rgba(34, 197, 94, 0.15)", borderRadius: "50%", padding: "10px", display: "flex", color: "var(--success)" }}>
+                      <CheckCircle size={28} />
                     </div>
-                    
+                    <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#fff", margin: 0 }}>
+                      .understandignore atualizado com sucesso!
+                    </h3>
+                    <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: "1.5", margin: 0 }}>
+                      As regras de exclusão foram aplicadas. A estimativa e os custos de tokens foram recalculados com base no escaneamento atualizado.
+                    </p>
                     <button 
                       type="button"
                       onClick={() => setHasSavedIgnore(false)}
-                      style={{ marginTop: "16px", background: "transparent", border: "none", color: "var(--primary)", cursor: "pointer", fontSize: "0.8rem", textDecoration: "underline", padding: 0 }}
+                      style={{ marginTop: "12px", background: "transparent", border: "none", color: "var(--primary)", cursor: "pointer", fontSize: "0.8rem", textDecoration: "underline", fontWeight: 600, padding: 0 }}
                     >
                       Editar regras de exclusão
                     </button>
