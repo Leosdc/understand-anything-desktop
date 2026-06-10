@@ -16,12 +16,15 @@ Understand Anything utiliza Modelos de Lenguaje de Gran Escala (LLMs) para leer,
    - Elija el proveedor correspondiente (**Google Gemini AI** o **Anthropic Claude**).
    - Seleccione el modelo deseado:
      * **Modelos de Google Gemini**:
+       - `gemini-3.5-flash` (Más nuevo rápido) — Entrada: $0.075 / 1M, Salida: $0.30 / 1M.
        - `gemini-2.5-flash` (Predeterminado rápido & económico) — Entrada: $0.075 / 1M, Salida: $0.30 / 1M.
        - `gemini-2.5-pro` (Alta inteligencia) — Entrada: $1.25 / 1M, Salida: $5.00 / 1M.
        - `gemini-1.5-flash` (Legado rápido) — Entrada: $0.075 / 1M, Salida: $0.30 / 1M.
        - `gemini-1.5-pro` (Legado avanzado) — Entrada: $1.25 / 1M, Salida: $5.00 / 1M.
        - `gemini-2.0-flash-exp` (Preview experimental) — Entrada: $0.075 / 1M, Salida: $0.30 / 1M.
      * **Modelos de Anthropic Claude**:
+       - `claude-sonnet-4-6` (Más nuevo inteligente) — Entrada: $3.00 / 1M, Salida: $15.00 / 1M.
+       - `claude-opus-4-6` (Más nuevo complejo) — Entrada: $15.00 / 1M, Salida: $75.00 / 1M.
        - `claude-3-5-sonnet-20241022` (Sonnet v2 - Equilibrio estándar) — Entrada: $3.00 / 1M, Salida: $15.00 / 1M.
        - `claude-3-5-haiku-20241022` (Haiku v2 - Rápido & económico) — Entrada: $0.80 / 1M, Salida: $4.00 / 1M.
        - `claude-3-opus-20240229` (Opus - Razonamiento máximo & costo alto) — Entrada: $15.00 / 1M, Salida: $75.00 / 1M.
