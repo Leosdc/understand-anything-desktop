@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import os from "os";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -42,4 +43,33 @@ if (fs.existsSync(srcDashboard)) {
   console.warn(`[Warning] Pasta de build do Dashboard não encontrada em ${srcDashboard}. Execute o build do dashboard primeiro.`);
 }
 
+// 3. Copiar a pasta do core do plugin (packages/core/dist)
+const homeDir = os.homedir();
+const possibleCorePaths = [
+  path.resolve(desktopRoot, "packages/core/dist"),
+  path.join(desktopRoot, "../understand-anything-plugin/packages/core/dist"),
+  path.join(homeDir, ".understand-anything/repo/understand-anything-plugin/packages/core/dist"),
+  path.join(homeDir, ".gemini/config/plugins/understand-anything-plugin/packages/core/dist")
+];
+
+let srcCore = null;
+for (const p of possibleCorePaths) {
+  if (fs.existsSync(p)) {
+    srcCore = p;
+    break;
+  }
+}
+
+if (srcCore) {
+  const destCore = path.join(distDir, "packages/core/dist");
+  console.log(`[Copy] Copiando core compilado de ${srcCore} para ${destCore}...`);
+  copyDirRecursive(srcCore, destCore);
+} else {
+  console.error("[Error] Não foi possível localizar packages/core/dist nos caminhos conhecidos.");
+  console.error("Caminhos verificados:");
+  possibleCorePaths.forEach(p => console.error(` - ${p}`));
+  process.exit(1);
+}
+
 console.log("[Copy] Cópia de assets concluída com sucesso.");
+
