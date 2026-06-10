@@ -517,17 +517,31 @@ export default function App() {
 
     if (apiProvider === "gemini") {
       if (modelName.includes("pro")) {
+        // Gemini 2.5 Pro e Gemini 1.5 Pro
         inputRate = 1.25 / 1000000;
         outputRate = 5.00 / 1000000;
-      } else { // flash
+      } else { 
+        // Gemini 2.5 Flash, Gemini 1.5 Flash e Gemini 2.0 Flash
         inputRate = 0.075 / 1000000;
         outputRate = 0.30 / 1000000;
       }
     } else { // anthropic
-      if (modelName.includes("haiku")) {
-        inputRate = 0.80 / 1000000;
-        outputRate = 4.00 / 1000000;
-      } else { // sonnet
+      if (modelName.includes("opus")) {
+        // Claude 3 Opus
+        inputRate = 15.00 / 1000000;
+        outputRate = 75.00 / 1000000;
+      } else if (modelName.includes("haiku")) {
+        if (modelName.includes("3-5")) {
+          // Claude 3.5 Haiku
+          inputRate = 0.80 / 1000000;
+          outputRate = 4.00 / 1000000;
+        } else {
+          // Claude 3 Haiku
+          inputRate = 0.25 / 1000000;
+          outputRate = 1.25 / 1000000;
+        }
+      } else {
+        // Claude 3.5 Sonnet e Claude 3 Sonnet
         inputRate = 3.00 / 1000000;
         outputRate = 15.00 / 1000000;
       }
@@ -612,13 +626,19 @@ export default function App() {
                 >
                   {apiProvider === "gemini" ? (
                     <>
-                      <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-                      <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+                      <option value="gemini-2.5-flash">Gemini 2.5 Flash (Padrão Rápido)</option>
+                      <option value="gemini-2.5-pro">Gemini 2.5 Pro (Altíssima Inteligência)</option>
+                      <option value="gemini-1.5-flash">Gemini 1.5 Flash (Legado Rápido)</option>
+                      <option value="gemini-1.5-pro">Gemini 1.5 Pro (Legado Avançado)</option>
+                      <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash Exp (Preview Rápido)</option>
                     </>
                   ) : (
                     <>
-                      <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
-                      <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku</option>
+                      <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet v2 (Padrão Inteligência)</option>
+                      <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku (Rápido & Econômico)</option>
+                      <option value="claude-3-opus-20240229">Claude 3 Opus (Máxima Complexidade)</option>
+                      <option value="claude-3-sonnet-20240229">Claude 3 Sonnet (Legado Médio)</option>
+                      <option value="claude-3-haiku-20240307">Claude 3 Haiku (Legado Rápido)</option>
                     </>
                   )}
                 </select>
