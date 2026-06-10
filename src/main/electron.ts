@@ -377,6 +377,46 @@ ipcMain.handle("confirm-analysis", (_, proceed) => {
   return { success: true };
 });
 
+// Ler o arquivo .understandignore de forma segura
+ipcMain.handle("get-ignore-file", (_, projectPath) => {
+  if (typeof projectPath !== "string") throw new Error("Caminho do projeto inválido.");
+  const targetDir = path.resolve(projectPath, ".understand-anything");
+  const ignorePath = path.join(targetDir, ".understandignore");
+
+  // Prevenir Path Traversal
+  if (!ignorePath.startsWith(path.resolve(projectPath))) {
+    throw new Error("Acesso a diretório não autorizado.");
+  }
+
+  if (fs.existsSync(ignorePath)) {
+    return fs.readFileSync(ignorePath, "utf-8");
+  }
+  return "";
+});
+
+// Gravar regras do .understandignore de forma segura
+ipcMain.handle("save-ignore-file", (_, projectPath, content) => {
+  if (typeof projectPath !== "string" || typeof content !== "string") {
+    throw new Error("Parâmetros de entrada inválidos.");
+  }
+  const targetDir = path.resolve(projectPath, ".understand-anything");
+  const ignorePath = path.join(targetDir, ".understandignore");
+
+  // Prevenir Path Traversal
+  if (!ignorePath.startsWith(path.resolve(projectPath))) {
+    throw new Error("Acesso a diretório não autorizado.");
+  }
+
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true });
+  }
+
+  // Normalizar quebras de linha e gravar
+  const normalizedContent = content.replace(/\r\n/g, "\n");
+  fs.writeFileSync(ignorePath, normalizedContent, "utf-8");
+  return { success: true };
+});
+
 // Iniciar a análise de código via IA
 ipcMain.handle("start-analysis", async (event, { projectPath, options }) => {
   activeProjectPath = projectPath;
