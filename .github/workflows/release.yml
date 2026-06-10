@@ -14,10 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -26,9 +22,9 @@ jobs:
       - name: Clone and build plugin core
         run: |
           git clone https://github.com/Lum1104/Understand-Anything.git ../understand-anything-plugin
-          cd ../understand-anything-plugin
-          pnpm install
-          pnpm --filter @understand-anything/core build
+          cd ../understand-anything-plugin/packages/core
+          npm install
+          npx tsc
         shell: bash
 
       - name: Install dependencies
