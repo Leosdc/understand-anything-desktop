@@ -103,6 +103,449 @@ const DIRECTION_ALIASES: Record<string, string> = {
 
 const VALID_DIRECTIONS = new Set(["forward", "backward", "bidirectional"]);
 
+const LOCALIZED_STRINGS: Record<string, Record<string, any>> = {
+  en: {
+    preflight: {
+      phaseName: "Pre-flight",
+      message: "Verifying directories and initializing environment...",
+      logLine: (path: string) => `Starting repository analysis at ${path}`
+    },
+    exclusions: {
+      phaseName: "Configuring Exclusions",
+      message: "Configuring filters in .understandignore...",
+      logLine: "Checking .understandignore...",
+      created: "Filters created.",
+      createdLog: "Generated ignore file at .understand-anything/.understandignore"
+    },
+    scan: {
+      phaseName: "Project Scan",
+      message: "Scanning repository files and imports...",
+      logLine: "Running deterministic scan via scan-project.mjs...",
+      found: (total: number) => `Found ${total} files. Extracting import map...`,
+      extractingLog: "Running extract-import-map.mjs...",
+      metadata: "Consulting AI for project metadata summary...",
+      metadataLog: "Reading project manifest and generating executive summary...",
+      success: "Scan completed successfully.",
+      successLog: (total: number) => `Phase 1 completed. Found ${total} files.`
+    },
+    batches: {
+      phaseName: "Split Semantic Batches",
+      message: "Calculating semantic batches...",
+      logLine: "Running compute-batches.mjs...",
+      success: (total: number) => `Semantic batches split into ${total} batches.`,
+      successLog: (total: number) => `Phase 1.5 completed. Created ${total} batches for AI analysis.`
+    },
+    cost: {
+      phaseName: "Cost Confirmation",
+      message: "Waiting for user cost confirmation...",
+      logLine: (files: number, batches: number) => `Preliminary estimate generated: ${files} files in ${batches} batches.`
+    },
+    analyze: {
+      phaseName: "Code Analysis",
+      message: (batches: number) => `Analyzing files with AI (0/${batches} batches)...`,
+      logLine: "Starting parallel file processing via AI...",
+      batch: (idx: number, total: number, files: string) => `Analyzing batch ${idx}/${total} (${files})...`,
+      batchLog: (idx: number, total: number, count: number) => `Sending batch ${idx}/${total} of files to AI (${count} file(s))`,
+      success: (idx: number, total: number) => `Batch ${idx}/${total} analyzed and saved successfully.`,
+      successLog: (idx: number, bIdx: number) => `Batch ${idx} graph saved to batch-${bIdx}.json`
+    },
+    merge: {
+      phaseName: "Graph Merging",
+      message: "Merging batches and normalizing relationships...",
+      logLine: "Starting native JavaScript merge of batch graphs...",
+      success: (nodes: number, edges: number) => `Merged ${nodes} nodes and ${edges} edges.`,
+      successLog: "Phase 2 completed successfully. assembled-graph.json written."
+    },
+    validate: {
+      phaseName: "Graph Validation",
+      message: "Running static consistency audit...",
+      logLine: "Running inline deterministic validator...",
+      success: (errors: number) => `Audit completed with ${errors} critical errors found.`,
+      successLog: (errors: number) => `Phase 3 completed. ${errors} inconsistencies noted.`
+    },
+    layers: {
+      phaseName: "Layers Analysis",
+      message: "Classifying files into architectural layers...",
+      logLine: "Invoking AI to define project layers...",
+      success: (count: number) => `Identified ${count} architectural layers.`,
+      successLog: (layers: string) => `Phase 4 completed. Created layers: ${layers}`
+    },
+    tour: {
+      phaseName: "Guide Construction",
+      message: "Structuring interactive learning guide (Tours)...",
+      logLine: "Invoking AI for pedagogical code guide...",
+      success: (steps: number) => `Tour created with ${steps} learning steps.`,
+      successLog: (steps: number) => `Phase 5 completed. Created ${steps} tour steps.`
+    },
+    assemble: {
+      phaseName: "Final Assembling",
+      message: "Verifying complete consistency of the knowledge graph...",
+      logLine: "Compiling structured parts into the final graph file...",
+      success: "Complete validation completed.",
+      successLog: "Phase 6 completed. Knowledge graph generated and validated."
+    },
+    save: {
+      phaseName: "Saving Graph",
+      message: "Writing audit baselines (fingerprints) and finishing...",
+      logLine: "Running build-fingerprints.mjs...",
+      success: "Processing completed successfully!",
+      successLog: (path: string) => `Phase 7 completed. Analysis finished and saved to ${path}`
+    }
+  },
+  "pt-BR": {
+    preflight: {
+      phaseName: "Pre-flight",
+      message: "Verificando diretórios e inicializando ambiente...",
+      logLine: (path: string) => `Iniciando análise do repositório em ${path}`
+    },
+    exclusions: {
+      phaseName: "Configurando Exclusões",
+      message: "Configurando filtros do .understandignore...",
+      logLine: "Verificando .understandignore...",
+      created: "Filtros criados.",
+      createdLog: "Gerado arquivo de ignore em .understand-anything/.understandignore"
+    },
+    scan: {
+      phaseName: "Varredura do Projeto",
+      message: "Vasculhando arquivos e importações do repositório...",
+      logLine: "Executando varredura determinística via scan-project.mjs...",
+      found: (total: number) => `Encontrados ${total} arquivos. Extraindo mapa de importações...`,
+      extractingLog: "Executando extract-import-map.mjs...",
+      metadata: "Consultando IA para meta-resumo do projeto...",
+      metadataLog: "Lendo manifesto do projeto e gerando resumo executivo...",
+      success: "Varredura concluída com sucesso.",
+      successLog: (total: number) => `Fase 1 concluída. Encontrados ${total} arquivos.`
+    },
+    batches: {
+      phaseName: "Divisão de Lotes",
+      message: "Calculando lotes semânticos...",
+      logLine: "Executando compute-batches.mjs...",
+      success: (total: number) => `Lotes semânticos divididos em ${total} lotes.`,
+      successLog: (total: number) => `Fase 1.5 concluída. Criados ${total} lotes para análise de IA.`
+    },
+    cost: {
+      phaseName: "Confirmação de Custo",
+      message: "Aguardando confirmação de custo pelo usuário...",
+      logLine: (files: number, batches: number) => `Estimativa preliminar gerada: ${files} arquivos em ${batches} lotes.`
+    },
+    analyze: {
+      phaseName: "Análise de Código",
+      message: (batches: number) => `Analisando arquivos com IA (0/${batches} lotes)...`,
+      logLine: "Iniciando processamento paralelo de arquivos via IA...",
+      batch: (idx: number, total: number, files: string) => `Analisando lote ${idx}/${total} (${files})...`,
+      batchLog: (idx: number, total: number, count: number) => `Enviando lote ${idx}/${total} de arquivos para a IA (${count} arquivo(s))`,
+      success: (idx: number, total: number) => `Lote ${idx}/${total} analisado e salvo com sucesso.`,
+      successLog: (idx: number, bIdx: number) => `Grafo do lote ${idx} salvo em batch-${bIdx}.json`
+    },
+    merge: {
+      phaseName: "Mesclagem de Grafos",
+      message: "Mesclando lotes e normalizando relações...",
+      logLine: "Iniciando mesclagem nativa em JavaScript de grafos de lotes...",
+      success: (nodes: number, edges: number) => `Mesclados ${nodes} nós e ${edges} arestas.`,
+      successLog: "Fase 2 concluída com sucesso. assembled-graph.json gravado."
+    },
+    validate: {
+      phaseName: "Validação do Grafo",
+      message: "Rodando auditoria estática de consistência...",
+      logLine: "Executando validador determinístico inline...",
+      success: (errors: number) => `Auditoria concluída com ${errors} erros graves encontrados.`,
+      successLog: (errors: number) => `Fase 3 concluída. ${errors} inconsistências anotadas.`
+    },
+    layers: {
+      phaseName: "Análise de Camadas",
+      message: "Classificando arquivos em camadas arquiteturais...",
+      logLine: "Invocando IA para definição de camadas do projeto...",
+      success: (count: number) => `Identificadas ${count} camadas arquiteturais.`,
+      successLog: (layers: string) => `Fase 4 concluída. Criadas camadas: ${layers}`
+    },
+    tour: {
+      phaseName: "Construção do Guia",
+      message: "Estruturando guia interativo de aprendizado (Tours)...",
+      logLine: "Invocando IA para roteiro didático do código...",
+      success: (steps: number) => `Roteiro criado com ${steps} etapas de aprendizado.`,
+      successLog: (steps: number) => `Fase 5 concluída. Criadas ${steps} etapas do guia.`
+    },
+    assemble: {
+      phaseName: "Montagem Final",
+      message: "Verificando consistência integral do grafo de conhecimento...",
+      logLine: "Compilando as partes estruturadas no arquivo de grafo final...",
+      success: "Validação integral concluída.",
+      successLog: "Fase 6 concluída. Grafo de conhecimento gerado e validado."
+    },
+    save: {
+      phaseName: "Salvando Grafo",
+      message: "Escrevendo baselines de auditoria (fingerprints) e finalizando...",
+      logLine: "Executando build-fingerprints.mjs...",
+      success: "Processamento concluído com sucesso!",
+      successLog: (path: string) => `Fase 7 concluída. Análise finalizada e salva em ${path}`
+    }
+  },
+  es: {
+    preflight: {
+      phaseName: "Pre-flight",
+      message: "Verificando directorios e inicializando entorno...",
+      logLine: (path: string) => `Iniciando análisis del repositorio en ${path}`
+    },
+    exclusions: {
+      phaseName: "Configurando Exclusiones",
+      message: "Configurando filtros en .understandignore...",
+      logLine: "Verificando .understandignore...",
+      created: "Filtros creados.",
+      createdLog: "Generado archivo de ignore en .understand-anything/.understandignore"
+    },
+    scan: {
+      phaseName: "Escaneo del Proyecto",
+      message: "Escaneando archivos e importaciones del repositorio...",
+      logLine: "Ejecutando escaneo determinista vía scan-project.mjs...",
+      found: (total: number) => `Encontrados ${total} archivos. Extrayendo mapa de importaciones...`,
+      extractingLog: "Ejecutando extract-import-map.mjs...",
+      metadata: "Consultando IA para meta-resumen del proyecto...",
+      metadataLog: "Leyendo manifiesto del proyecto y generando resumen ejecutivo...",
+      success: "Escaneo completado con éxito.",
+      successLog: (total: number) => `Fase 1 completada. Encontrados ${total} archivos.`
+    },
+    batches: {
+      phaseName: "División de Lotes",
+      message: "Calculando lotes semánticos...",
+      logLine: "Ejecutando compute-batches.mjs...",
+      success: (total: number) => `Lotes semánticos divididos en ${total} lotes.`,
+      successLog: (total: number) => `Fase 1.5 completada. Creados ${total} lotes para análisis de IA.`
+    },
+    cost: {
+      phaseName: "Confirmación de Costo",
+      message: "Esperando confirmación de costo por el usuario...",
+      logLine: (files: number, batches: number) => `Estimación preliminar generada: ${files} archivos en ${batches} lotes.`
+    },
+    analyze: {
+      phaseName: "Análisis de Código",
+      message: (batches: number) => `Analizando archivos con IA (0/${batches} lotes)...`,
+      logLine: "Iniciando procesamiento paralelo de archivos vía IA...",
+      batch: (idx: number, total: number, files: string) => `Analizando lote ${idx}/${total} (${files})...`,
+      batchLog: (idx: number, total: number, count: number) => `Enviando lote ${idx}/${total} de archivos a la IA (${count} archivo(s))`,
+      success: (idx: number, total: number) => `Lote ${idx}/${total} analizado y guardado con éxito.`,
+      successLog: (idx: number, bIdx: number) => `Gráfico del lote ${idx} guardado en batch-${bIdx}.json`
+    },
+    merge: {
+      phaseName: "Fusión de Gráficos",
+      message: "Fusionando lotes y normalizando relaciones...",
+      logLine: "Iniciando fusión nativa en JavaScript de gráficos de lotes...",
+      success: (nodes: number, edges: number) => `Fusionados ${nodes} nodos y ${edges} aristas.`,
+      successLog: "Fase 2 completada con éxito. assembled-graph.json escrito."
+    },
+    validate: {
+      phaseName: "Validación del Gráfico",
+      message: "Ejecutando auditoría estática de consistencia...",
+      logLine: "Ejecutando validador determinista inline...",
+      success: (errors: number) => `Auditoría completada con ${errors} errores graves encontrados.`,
+      successLog: (errors: number) => `Fase 3 completada. ${errors} inconsistencias anotadas.`
+    },
+    layers: {
+      phaseName: "Análisis de Capas",
+      message: "Clasificando archivos en capas arquitectónicas...",
+      logLine: "Invocando IA para definición de capas del proyecto...",
+      success: (count: number) => `Identificadas ${count} capas arquitectónicas.`,
+      successLog: (layers: string) => `Fase 4 completada. Creadas capas: ${layers}`
+    },
+    tour: {
+      phaseName: "Construcción de la Guía",
+      message: "Estructurando guía interactiva de aprendizaje (Tours)...",
+      logLine: "Invocando IA para ruta pedagógica del código...",
+      success: (steps: number) => `Ruta creada con ${steps} etapas de aprendizaje.`,
+      successLog: (steps: number) => `Fase 5 completada. Creadas ${steps} etapas de la guía.`
+    },
+    assemble: {
+      phaseName: "Ensamblaje Final",
+      message: "Verificando consistencia integral del gráfico de conocimiento...",
+      logLine: "Compilando las partes estructuradas en el archivo de gráfico final...",
+      success: "Validación integral completada.",
+      successLog: "Fase 6 completada. Gráfico de conocimiento generado y validado."
+    },
+    save: {
+      phaseName: "Guardando Gráfico",
+      message: "Escribiendo baselines de auditoría (fingerprints) y finalizando...",
+      logLine: "Ejecutando build-fingerprints.mjs...",
+      success: "¡Procesamiento completado con éxito!",
+      successLog: (path: string) => `Fase 7 completada. Análisis finalizado y guardado en ${path}`
+    }
+  },
+  zh: {
+    preflight: {
+      phaseName: "预检阶段 (Pre-flight)",
+      message: "正在验证目录并初始化环境...",
+      logLine: (path: string) => `正在初始化位于 ${path} 的代码库分析`
+    },
+    exclusions: {
+      phaseName: "配置排除规则",
+      message: "正在配置 .understandignore 排除规则...",
+      logLine: "正在检查 .understandignore 文件...",
+      created: "排除规则创建成功。",
+      createdLog: "已在 .understand-anything/.understandignore 生成默认排除文件"
+    },
+    scan: {
+      phaseName: "代码库扫描",
+      message: "正在扫描代码库中的文件和导入关系...",
+      logLine: "正在通过 scan-project.mjs 执行确定性扫描...",
+      found: (total: number) => `找到 ${total} 个文件。正在提取导入依赖关系图...`,
+      extractingLog: "正在执行 extract-import-map.mjs...",
+      metadata: "正在请求 AI 生成项目元数据总结...",
+      metadataLog: "正在读取项目清单文件并生成执行摘要...",
+      success: "扫描成功完成。",
+      successLog: (total: number) => `第 1 阶段已完成。共找到 ${total} 个文件。`
+    },
+    batches: {
+      phaseName: "语义分批",
+      message: "正在计算语义分析批次...",
+      logLine: "正在执行 compute-batches.mjs...",
+      success: (total: number) => `语义批次已成功划分为 ${total} 个批次。`,
+      successLog: (total: number) => `第 1.5 阶段已完成。共创建 ${total} 个 AI 分析批次。`
+    },
+    cost: {
+      phaseName: "费用确认",
+      message: "正在等待用户确认费用...",
+      logLine: (files: number, batches: number) => `已生成初步估算：共 ${files} 个文件，分为 ${batches} 个批次。`
+    },
+    analyze: {
+      phaseName: "代码分析",
+      message: (batches: number) => `正在使用 AI 分析文件 (共 0/${batches} 批)...`,
+      logLine: "正在启动 AI 文件的并行处理...",
+      batch: (idx: number, total: number, files: string) => `正在分析批次 ${idx}/${total} (${files})...`,
+      batchLog: (idx: number, total: number, count: number) => `正在发送第 ${idx}/${total} 批文件给 AI (共 ${count} 个文件)`,
+      success: (idx: number, total: number) => `批次 ${idx}/${total} 分析并保存成功。`,
+      successLog: (idx: number, bIdx: number) => `批次 ${idx} 的图谱已保存至 batch-${bIdx}.json`
+    },
+    merge: {
+      phaseName: "图谱合并",
+      message: "正在合并批次并归一化逻辑关系...",
+      logLine: "正在启动原生 JavaScript 批次图谱合并...",
+      success: (nodes: number, edges: number) => `已合并 ${nodes} 个节点和 ${edges} 条边。`,
+      successLog: "第 2 阶段已完成。已生成 assembled-graph.json。"
+    },
+    validate: {
+      phaseName: "图谱验证",
+      message: "正在执行静态一致性审核...",
+      logLine: "正在执行内联确定性验证...",
+      success: (errors: number) => `审核完成，共发现 ${errors} 个严重错误。`,
+      successLog: (errors: number) => `第 3 阶段已完成。已标记 ${errors} 处不一致。`
+    },
+    layers: {
+      phaseName: "架构分层",
+      message: "正在将文件归类到逻辑架构层中...",
+      logLine: "正在调用 AI 定义项目的架构层...",
+      success: (count: number) => `已识别出 ${count} 个架构层。`,
+      successLog: (layers: string) => `第 4 阶段已完成。已创建架构层：${layers}`
+    },
+    tour: {
+      phaseName: "编写学习路线",
+      message: "正在构建交互式学习指南路线 (Tours)...",
+      logLine: "正在调用 AI 生成代码教学指南...",
+      success: (steps: number) => `已成功创建包含 ${steps} 个步骤的学习路线。`,
+      successLog: (steps: number) => `第 5 阶段已完成。已创建 ${steps} 个教学步骤。`
+    },
+    assemble: {
+      phaseName: "最终装配",
+      message: "正在校验知识图谱的完整一致性...",
+      logLine: "正在将各部分装配编译到最终图谱文件中...",
+      success: "完整校验已完成。",
+      successLog: "第 6 阶段已完成。知识图谱已生成并校验通过。"
+    },
+    save: {
+      phaseName: "保存图谱",
+      message: "正在编写审核基线 (fingerprints) 并收尾...",
+      logLine: "正在执行 build-fingerprints.mjs...",
+      success: "处理圆满完成！",
+      successLog: (path: string) => `第 7 阶段已完成。分析已结束并保存至 ${path}`
+    }
+  },
+  ja: {
+    preflight: {
+      phaseName: "事前確認 (Pre-flight)",
+      message: "ディレクトリの確認および環境の初期化中...",
+      logLine: (path: string) => `${path} でリポジトリ分析を初期化中...`
+    },
+    exclusions: {
+      phaseName: "除外設定",
+      message: ".understandignore 除外ルールの設定中...",
+      logLine: ".understandignore ファイルの確認中...",
+      created: "フィルターが作成されました。",
+      createdLog: "デフォルトの除外ファイルを .understand-anything/.understandignore に生成しました"
+    },
+    scan: {
+      phaseName: "プロジェクトスキャン",
+      message: "リポジトリのファイルとインポート関係のスキャン中...",
+      logLine: "scan-project.mjs による確定的なスキャンを実行中...",
+      found: (total: number) => `${total} 個のファイルが見つかりました。インポート関係図を抽出中...`,
+      extractingLog: "extract-import-map.mjs を実行中...",
+      metadata: "AI にプロジェクトメタデータの要約を要求中...",
+      metadataLog: "プロジェクトマニフェストファイルを読み込み、要約を生成中...",
+      success: "スキャンが正常に完了しました。",
+      successLog: (total: number) => `フェーズ 1 が完了しました。計 ${total} 個のファイルが見つかりました。`
+    },
+    batches: {
+      phaseName: "セマンティック分割",
+      message: "セマンティック分析バッチの計算中...",
+      logLine: "compute-batches.mjs を実行中...",
+      success: (total: number) => `バッチが ${total} 個に正常に分割されました。`,
+      successLog: (total: number) => `フェーズ 1.5 が完了しました。計 ${total} 個の AI 分析バッチが作成されました。`
+    },
+    cost: {
+      phaseName: "コスト確認",
+      message: "ユーザーによるコスト確認を待機中...",
+      logLine: (files: number, batches: number) => `予備見積もり生成完了：計 ${files} ファイル、${batches} バッチ。`
+    },
+    analyze: {
+      phaseName: "コード分析",
+      message: (batches: number) => `AI を使用してファイルを分析中 (計 0/${batches} バッチ)...`,
+      logLine: "AI によるファイルの並行処理を起動中...",
+      batch: (idx: number, total: number, files: string) => `バッチ ${idx}/${total} (${files}) を分析中...`,
+      batchLog: (idx: number, total: number, count: number) => `AI に第 ${idx}/${total} バッチを送信中 (計 ${count} ファイル)`,
+      success: (idx: number, total: number) => `バッチ ${idx}/${total} の分析と保存に成功しました。`,
+      successLog: (idx: number, bIdx: number) => `バッチ ${idx} のグラフが batch-${bIdx}.json に保存されました`
+    },
+    merge: {
+      phaseName: "グラフの統合",
+      message: "バッチの統合および論理関係の正規化中...",
+      logLine: "ネイティブの JavaScript によるバッチグラフの統合を起動中...",
+      success: (nodes: number, edges: number) => `${nodes} 個のノードと ${edges} 個のエッジを統合しました。`,
+      successLog: "フェーズ 2 が完了しました。assembled-graph.json を出力しました。"
+    },
+    validate: {
+      phaseName: "グラフの検証",
+      message: "静的整合性の監査を実行中...",
+      logLine: "インライン確定的検証を実行中...",
+      success: (errors: number) => `監査が完了しました。計 ${errors} 個の重大なエラーが検出されました。`,
+      successLog: (errors: number) => `フェーズ 3 が完了しました。${errors} 箇所の不整合が記録されました。`
+    },
+    layers: {
+      phaseName: "アーキテクチャ階層化",
+      message: "ファイルを論理的なアーキテクチャ層に分類中...",
+      logLine: "AI にプロジェクトのレイヤー定義を要求中...",
+      success: (count: number) => `${count} 個のアーキテクチャレイヤーが特定されました。`,
+      successLog: (layers: string) => `フェーズ 4 が完了しました。作成されたレイヤー：${layers}`
+    },
+    tour: {
+      phaseName: "ツアー作成",
+      message: "インタラクティブな学習ガイドツアー (Tours) を構築中...",
+      logLine: "AI にコードチュートリアルガイドの作成を要求中...",
+      success: (steps: number) => `${steps} ステップの学習ガイドツアーが作成されました。`,
+      successLog: (steps: number) => `フェーズ 5 が完了しました。${steps} 個のツアー手順を作成しました。`
+    },
+    assemble: {
+      phaseName: "最終アセンブリ",
+      message: "知識グラフの完全な整合性を検証中...",
+      logLine: "各構成パーツを最終グラフファイルにアセンブリ中...",
+      success: "完全検証が完了しました。",
+      successLog: "フェーズ 6 が完了しました。知識グラフが生成され、検証に合格しました。"
+    },
+    save: {
+      phaseName: "グラフの保存",
+      message: "監査基準 (fingerprints) の書き込みおよび終了処理中...",
+      logLine: "build-fingerprints.mjs を実行中...",
+      success: "すべての処理が正常に完了しました！",
+      successLog: (path: string) => `フェーズ 7 が完了しました。分析が終了し、${path} に保存されました`
+    }
+  }
+};
+
 // Helper para chamar APIs de forma genérica
 async function callLLM(
   prompt: string,
@@ -708,15 +1151,16 @@ export async function runAnalysis(
 ): Promise<void> {
   resetCancelState();
   const language = options.language || "en";
+  const t = LOCALIZED_STRINGS[language] || LOCALIZED_STRINGS.en;
   const languageDirective = `> **Language directive**: Generate all textual content (summaries, descriptions, tags, titles, languageNotes, languageLesson) in **${language}**. Maintain technical accuracy while using natural, native-level phrasing in the target language. Keep technical terms in English when no standard translation exists (e.g., "middleware", "hook", "barrel").`;
 
   // Fase 0 - Pre-flight
   onProgress({
     phase: 0,
     totalPhases: 7,
-    phaseName: "Pre-flight",
-    message: "Verificando diretórios e inicializando ambiente...",
-    logLine: "Iniciando análise do repositório em " + projectPath
+    phaseName: t.preflight.phaseName,
+    message: t.preflight.message,
+    logLine: t.preflight.logLine(projectPath)
   });
 
   const uaDir = path.join(projectPath, ".understand-anything");
@@ -741,9 +1185,9 @@ export async function runAnalysis(
   onProgress({
     phase: 0.5,
     totalPhases: 7,
-    phaseName: "Configurando Exclusões",
-    message: "Configurando filtros do .understandignore...",
-    logLine: "Verificando .understandignore..."
+    phaseName: t.exclusions.phaseName,
+    message: t.exclusions.message,
+    logLine: t.exclusions.logLine
   });
 
   const ignorePath = path.join(uaDir, ".understandignore");
@@ -754,9 +1198,9 @@ export async function runAnalysis(
     onProgress({
       phase: 0.5,
       totalPhases: 7,
-      phaseName: "Configurando Exclusões",
-      message: "Filtros criados.",
-      logLine: "Gerado arquivo de ignore em .understand-anything/.understandignore"
+      phaseName: t.exclusions.phaseName,
+      message: t.exclusions.created,
+      logLine: t.exclusions.createdLog
     });
   }
 
@@ -764,9 +1208,9 @@ export async function runAnalysis(
   onProgress({
     phase: 1,
     totalPhases: 7,
-    phaseName: "Varredura do Projeto",
-    message: "Vasculhando arquivos e importações do repositório...",
-    logLine: "Executando varredura determinística via scan-project.mjs..."
+    phaseName: t.scan.phaseName,
+    message: t.scan.message,
+    logLine: t.scan.logLine
   });
 
   // Caminhos dos scripts da skill
@@ -788,9 +1232,9 @@ export async function runAnalysis(
   onProgress({
     phase: 1,
     totalPhases: 7,
-    phaseName: "Varredura do Projeto",
-    message: `Encontrados ${rawScanData.totalFiles} arquivos. Extraindo mapa de importações...`,
-    logLine: "Executando extract-import-map.mjs..."
+    phaseName: t.scan.phaseName,
+    message: t.scan.found(rawScanData.totalFiles),
+    logLine: t.scan.extractingLog
   });
 
   // Criar entrada para importScript
@@ -813,9 +1257,9 @@ export async function runAnalysis(
   onProgress({
     phase: 1,
     totalPhases: 7,
-    phaseName: "Varredura do Projeto",
-    message: "Consultando IA para meta-resumo do projeto...",
-    logLine: "Lendo manifesto do projeto e gerando resumo executivo..."
+    phaseName: t.scan.phaseName,
+    message: t.scan.metadata,
+    logLine: t.scan.metadataLog
   });
 
   let readmeHead = "";
@@ -897,18 +1341,18 @@ Gere o JSON no seguinte formato estrito:
   onProgress({
     phase: 1,
     totalPhases: 7,
-    phaseName: "Varredura do Projeto",
-    message: "Varredura concluída com sucesso.",
-    logLine: `Fase 1 concluída. Encontrados ${scanResult.totalFiles} arquivos.`
+    phaseName: t.scan.phaseName,
+    message: t.scan.success,
+    logLine: t.scan.successLog(scanResult.totalFiles)
   });
 
   // Fase 1.5 - BATCH
   onProgress({
     phase: 1.5,
     totalPhases: 7,
-    phaseName: "Divisão de Lotes",
-    message: "Calculando lotes semânticos...",
-    logLine: "Executando compute-batches.mjs..."
+    phaseName: t.batches.phaseName,
+    message: t.batches.message,
+    logLine: t.batches.logLine
   });
 
   const batchScript = path.join(pluginRoot, "skills/understand/compute-batches.mjs");
@@ -925,9 +1369,9 @@ Gere o JSON no seguinte formato estrito:
   onProgress({
     phase: 1.5,
     totalPhases: 7,
-    phaseName: "Divisão de Lotes",
-    message: `Lotes semânticos divididos em ${totalBatches} lotes.`,
-    logLine: `Fase 1.5 concluída. Criados ${totalBatches} lotes para análise de IA.`
+    phaseName: t.batches.phaseName,
+    message: t.batches.success(totalBatches),
+    logLine: t.batches.successLog(totalBatches)
   });
 
   // Calcular estimativa de custo de tokens e arquivos antes de iniciar a Fase 2 (IA)
@@ -957,9 +1401,9 @@ Gere o JSON no seguinte formato estrito:
   onProgress({
     phase: 1.5,
     totalPhases: 7,
-    phaseName: "Confirmação de Custo",
-    message: "Aguardando confirmação de custo pelo usuário...",
-    logLine: `Estimativa preliminar gerada: ${totalFilesToAnalyze} arquivos em ${totalBatches} lotes.`,
+    phaseName: t.cost.phaseName,
+    message: t.cost.message,
+    logLine: t.cost.logLine(totalFilesToAnalyze, totalBatches),
     detail: JSON.stringify({
       isConfirmationRequired: true,
       totalFiles: totalFilesToAnalyze,
@@ -984,9 +1428,9 @@ Gere o JSON no seguinte formato estrito:
   onProgress({
     phase: 2,
     totalPhases: 7,
-    phaseName: "Análise de Código",
-    message: `Analisando arquivos com IA (0/${totalBatches} lotes)...`,
-    logLine: "Iniciando processamento paralelo de arquivos via IA..."
+    phaseName: t.analyze.phaseName,
+    message: t.analyze.message(totalBatches),
+    logLine: t.analyze.logLine
   });
 
   // Processamento concorrente dos lotes (limite de concorrência: 3 para evitar rate-limit no desktop)
@@ -1004,9 +1448,9 @@ Gere o JSON no seguinte formato estrito:
     onProgress({
       phase: 2,
       totalPhases: 7,
-      phaseName: "Análise de Código",
-      message: `Analisando lote ${batchIdx}/${totalBatches} (${filePaths.slice(0, 2).join(", ")}${filePaths.length > 2 ? "..." : ""})...`,
-      logLine: `Enviando lote ${batchIdx}/${totalBatches} de arquivos para a IA (${filePaths.length} arquivo(s))`
+      phaseName: t.analyze.phaseName,
+      message: t.analyze.batch(batchIdx, totalBatches, `${filePaths.slice(0, 2).join(", ")}${filePaths.length > 2 ? "..." : ""}`),
+      logLine: t.analyze.batchLog(batchIdx, totalBatches, filePaths.length)
     });
 
     // Ler conteúdo de cada arquivo
@@ -1096,9 +1540,9 @@ Gere o JSON strito de saída contendo apenas as propriedades "nodes" e "edges":
     onProgress({
       phase: 2,
       totalPhases: 7,
-      phaseName: "Análise de Código",
-      message: `Lote ${batchIdx}/${totalBatches} analisado e salvo com sucesso.`,
-      logLine: `Grafo do lote ${batchIdx} salvo em batch-${index}.json`
+      phaseName: t.analyze.phaseName,
+      message: t.analyze.success(batchIdx, totalBatches),
+      logLine: t.analyze.successLog(batchIdx, index)
     });
   };
 
@@ -1119,9 +1563,9 @@ Gere o JSON strito de saída contendo apenas as propriedades "nodes" e "edges":
   onProgress({
     phase: 2,
     totalPhases: 7,
-    phaseName: "Mesclagem de Grafos",
-    message: "Mesclando lotes e normalizando relações...",
-    logLine: "Iniciando mesclagem nativa em JavaScript de grafos de lotes..."
+    phaseName: t.merge.phaseName,
+    message: t.merge.message,
+    logLine: t.merge.logLine
   });
 
   const batchFiles = fs.readdirSync(intermediateDir).filter(f => f.startsWith("batch-") && f.endsWith(".json") && f !== "batches.json");
@@ -1140,18 +1584,18 @@ Gere o JSON strito de saída contendo apenas as propriedades "nodes" e "edges":
   onProgress({
     phase: 2,
     totalPhases: 7,
-    phaseName: "Mesclagem de Grafos",
-    message: `Mesclados ${mergedGraph.nodes.length} nós e ${mergedGraph.edges.length} arestas.`,
-    logLine: "Fase 2 concluída com sucesso.assembled-graph.json gravado."
+    phaseName: t.merge.phaseName,
+    message: t.merge.success(mergedGraph.nodes.length, mergedGraph.edges.length),
+    logLine: t.merge.successLog
   });
 
   // Fase 3 - ASSEMBLE REVIEW
   onProgress({
     phase: 3,
     totalPhases: 7,
-    phaseName: "Validação do Grafo",
-    message: "Rodando auditoria estática de consistência...",
-    logLine: "Executando validador determinístico inline..."
+    phaseName: t.validate.phaseName,
+    message: t.validate.message,
+    logLine: t.validate.logLine
   });
 
   // Validador determinístico inline de grafos
@@ -1174,18 +1618,18 @@ Gere o JSON strito de saída contendo apenas as propriedades "nodes" e "edges":
   onProgress({
     phase: 3,
     totalPhases: 7,
-    phaseName: "Validação do Grafo",
-    message: `Auditoria concluída com ${reviewResult.issues.length} erros graves encontrados.`,
-    logLine: `Fase 3 concluída. ${reviewResult.issues.length} inconsistências anotadas.`
+    phaseName: t.validate.phaseName,
+    message: t.validate.success(reviewResult.issues.length),
+    logLine: t.validate.successLog(reviewResult.issues.length)
   });
 
   // Fase 4 - ARCHITECTURE
   onProgress({
     phase: 4,
     totalPhases: 7,
-    phaseName: "Análise de Camadas",
-    message: "Classificando arquivos em camadas arquiteturais...",
-    logLine: "Invocando IA para definição de camadas do projeto..."
+    phaseName: t.layers.phaseName,
+    message: t.layers.message,
+    logLine: t.layers.logLine
   });
 
   // Mapear apenas nós de arquivo (e relacionados) para a IA criar camadas
@@ -1270,18 +1714,18 @@ Responda em formato JSON estrito:
   onProgress({
     phase: 4,
     totalPhases: 7,
-    phaseName: "Análise de Camadas",
-    message: `Identificadas ${parsedLayers.length} camadas arquiteturais.`,
-    logLine: `Fase 4 concluída. Criadas camadas: ${parsedLayers.map(l => l.name).join(", ")}`
+    phaseName: t.layers.phaseName,
+    message: t.layers.success(parsedLayers.length),
+    logLine: t.layers.successLog(parsedLayers.map(l => l.name).join(", "))
   });
 
   // Fase 5 - TOUR
   onProgress({
     phase: 5,
     totalPhases: 7,
-    phaseName: "Construção do Guia",
-    message: "Estruturando guia interativo de aprendizado (Tours)...",
-    logLine: "Invocando IA para roteiro didático do código..."
+    phaseName: t.tour.phaseName,
+    message: t.tour.message,
+    logLine: t.tour.logLine
   });
 
   const tourPrompt = `Crie um roteiro guiado passo a passo para um novo engenheiro de software aprender a navegar e entender este repositório.
@@ -1343,18 +1787,18 @@ Responda em formato JSON estrito:
   onProgress({
     phase: 5,
     totalPhases: 7,
-    phaseName: "Construção do Guia",
-    message: `Roteiro criado com ${parsedTour.length} etapas de aprendizado.`,
-    logLine: `Fase 5 concluída. Criadas ${parsedTour.length} etapas do guia.`
+    phaseName: t.tour.phaseName,
+    message: t.tour.success(parsedTour.length),
+    logLine: t.tour.successLog(parsedTour.length)
   });
 
   // Fase 6 - REVIEW
   onProgress({
     phase: 6,
     totalPhases: 7,
-    phaseName: "Montagem Final",
-    message: "Verificando consistência integral do grafo de conhecimento...",
-    logLine: "Compilando as partes estruturadas no arquivo de grafo final..."
+    phaseName: t.assemble.phaseName,
+    message: t.assemble.message,
+    logLine: t.assemble.logLine
   });
 
   // Assemlar o grafo final
@@ -1380,18 +1824,18 @@ Responda em formato JSON estrito:
   onProgress({
     phase: 6,
     totalPhases: 7,
-    phaseName: "Montagem Final",
-    message: "Validação integral concluída.",
-    logLine: "Fase 6 concluída. Grafo de conhecimento gerado e validado."
+    phaseName: t.assemble.phaseName,
+    message: t.assemble.success,
+    logLine: t.assemble.successLog
   });
 
   // Fase 7 - SAVE
   onProgress({
     phase: 7,
     totalPhases: 7,
-    phaseName: "Salvando Grafo",
-    message: "Escrevendo baselines de auditoria (fingerprints) e finalizando...",
-    logLine: "Executando build-fingerprints.mjs..."
+    phaseName: t.save.phaseName,
+    message: t.save.message,
+    logLine: t.save.logLine
   });
 
   // Gerar baseline de fingerprints
@@ -1430,8 +1874,8 @@ Responda em formato JSON estrito:
   onProgress({
     phase: 7,
     totalPhases: 7,
-    phaseName: "Salvando Grafo",
-    message: "Processamento concluído com sucesso!",
-    logLine: "Fase 7 concluída. Análise finalizada e salva em " + finalGraphPath
+    phaseName: t.save.phaseName,
+    message: t.save.success,
+    logLine: t.save.successLog(finalGraphPath)
   });
 }
