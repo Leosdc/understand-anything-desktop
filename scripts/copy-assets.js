@@ -77,6 +77,8 @@ const coreDependencies = [
   "yaml",
   "fuse.js",
   "ignore",
+  "graphology",
+  "graphology-communities-louvain",
   "web-tree-sitter",
   "tree-sitter-c-sharp",
   "tree-sitter-cpp",
