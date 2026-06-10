@@ -30,6 +30,20 @@ La versión portátil de escritorio fue diseñada para eliminar diversos obstác
 * **Sincronización Dinámica de Idiomas**: Cambia el idioma de la aplicación en cualquier momento. La interfaz sincroniza de inmediato la configuración con el proyecto actual para que el dashboard visual refleje el nuevo idioma seleccionado de forma síncrona.
 * **Servidor HTTP Local Protegido**: Inicializa un servidor backend ligero en Express protegido por tokens criptográficos únicos autogenerados en el inicio, evitando que otros equipos de tu red local accedan a tu base de código.
 
+---
+
+## ⚠️ Optimización de Costos de IA y Exclusiones
+
+Debido a que **Understand Anything** lee la lógica real de tu base de código (Fase 2) para construir el gráfico de conocimiento semántico, analizar directorios pesados de terceros o archivos compilados puede consumir tokens de la API de IA en exceso.
+
+Para evitar costos innecesarios:
+1. Dentro de la carpeta de tu proyecto, localiza o crea el directorio `.understand-anything/`.
+2. Crea o edita un archivo llamado `.understandignore` dentro de esa carpeta.
+3. Añade patrones glob (glob patterns) para los archivos y carpetas que deseas ignorar (por ejemplo: `node_modules/`, `dist/`, `.git/`, logs, imágenes).
+4. Para obtener una guía detallada de configuración y reglas avanzadas, consulta el [TUTORIAL.es.md](file:///c:/Users/PC/Documents/Bots/Understand-Anything/docs/TUTORIAL.es.md) completo.
+
+---
+
 ### 📊 Flujo de Trabajo y Datos
 
 ```mermaid
