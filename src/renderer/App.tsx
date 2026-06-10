@@ -86,7 +86,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ignorePlaceholder: "Enter ignore patterns (e.g., node_modules/)...",
     ignoreRecommended: "Recommended to exclude:",
     saveRecalculate: "Save & Recalculate",
-    ignoreHelp: "Excluding heavy folders (like node_modules, dist, .git, etc.) prevents high AI costs and speeds up analysis."
+    ignoreHelp: "Excluding heavy folders (like node_modules, dist, .git, etc.) prevents high AI costs and speeds up analysis.",
+    extremelyCheap: "extremely cheap",
+    ignoreSuccessTitle: ".understandignore updated successfully!",
+    ignoreSuccessMessage: "The exclusion rules have been applied. The estimate and token costs have been recalculated based on the updated scan.",
+    editIgnoreRules: "Edit exclusion rules",
+    models: {
+      gemini35Flash: "Gemini 3.5 Flash (Newest Fast)",
+      gemini25Flash: "Gemini 2.5 Flash (Standard Fast)",
+      gemini25Pro: "Gemini 2.5 Pro (Highest Intelligence)",
+      gemini15Flash: "Gemini 1.5 Flash (Legacy Fast)",
+      gemini15Pro: "Gemini 1.5 Pro (Legacy Advanced)",
+      gemini20FlashExp: "Gemini 2.0 Flash Exp (Preview Fast)",
+      claude46Sonnet: "Claude 4.6 Sonnet (Newest Smart)",
+      claude46Opus: "Claude 4.6 Opus (Newest Complex)",
+      claude35Sonnet: "Claude 3.5 Sonnet v2 (Standard Smart)",
+      claude35Haiku: "Claude 3.5 Haiku (Fast & Cheap)",
+      claude3Opus: "Claude 3 Opus (Maximum Complexity)",
+      claude3Sonnet: "Claude 3 Sonnet (Legacy Medium)",
+      claude3Haiku: "Claude 3 Haiku (Legacy Fast)"
+    }
   },
   "pt-BR": {
     title: "Understand Anything Desktop",
@@ -142,7 +161,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ignorePlaceholder: "Digite os padrões de ignore (ex: node_modules/)...",
     ignoreRecommended: "Recomendado excluir:",
     saveRecalculate: "Salvar & Recalcular",
-    ignoreHelp: "Excluir pastas pesadas (como node_modules, dist, .git, etc.) evita custos elevados com a IA e acelera a análise."
+    ignoreHelp: "Excluir pastas pesadas (como node_modules, dist, .git, etc.) evita custos elevados com a IA e acelera a análise.",
+    extremelyCheap: "Extremamente Barato",
+    ignoreSuccessTitle: ".understandignore atualizado com sucesso!",
+    ignoreSuccessMessage: "As regras de exclusão foram aplicadas. A estimativa e os custos de tokens foram recalculados com base no escaneamento atualizado.",
+    editIgnoreRules: "Editar regras de exclusão",
+    models: {
+      gemini35Flash: "Gemini 3.5 Flash (Mais Novo Rápido)",
+      gemini25Flash: "Gemini 2.5 Flash (Padrão Rápido)",
+      gemini25Pro: "Gemini 2.5 Pro (Altíssima Inteligência)",
+      gemini15Flash: "Gemini 1.5 Flash (Legado Rápido)",
+      gemini15Pro: "Gemini 1.5 Pro (Legado Avançado)",
+      gemini20FlashExp: "Gemini 2.0 Flash Exp (Preview Rápido)",
+      claude46Sonnet: "Claude 4.6 Sonnet (Mais Novo Inteligente)",
+      claude46Opus: "Claude 4.6 Opus (Mais Novo Complexo)",
+      claude35Sonnet: "Claude 3.5 Sonnet v2 (Padrão Inteligência)",
+      claude35Haiku: "Claude 3.5 Haiku (Rápido & Econômico)",
+      claude3Opus: "Claude 3 Opus (Máxima Complexidade)",
+      claude3Sonnet: "Claude 3 Sonnet (Legado Médio)",
+      claude3Haiku: "Claude 3 Haiku (Legado Rápido)"
+    }
   },
   es: {
     title: "Understand Anything Desktop",
@@ -198,7 +236,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ignorePlaceholder: "Ingrese patrones de exclusión (ej: node_modules/)...",
     ignoreRecommended: "Recomendado excluir:",
     saveRecalculate: "Guardar y Recalcular",
-    ignoreHelp: "Excluir carpetas pesadas (como node_modules, dist, .git, etc.) evita costos elevados de IA y acelera el análisis."
+    ignoreHelp: "Excluir carpetas pesadas (como node_modules, dist, .git, etc.) evita costos elevados de IA y acelera el análisis.",
+    extremelyCheap: "Extremadamente barato",
+    ignoreSuccessTitle: "¡.understandignore actualizado con éxito!",
+    ignoreSuccessMessage: "Las reglas de exclusión han sido aplicadas. La estimación y los costos de tokens han sido recalculados en base al escaneo actualizado.",
+    editIgnoreRules: "Editar reglas de exclusión",
+    models: {
+      gemini35Flash: "Gemini 3.5 Flash (Más Nuevo Rápido)",
+      gemini25Flash: "Gemini 2.5 Flash (Estándar Rápido)",
+      gemini25Pro: "Gemini 2.5 Pro (Máxima Inteligencia)",
+      gemini15Flash: "Gemini 1.5 Flash (Legado Rápido)",
+      gemini15Pro: "Gemini 1.5 Pro (Legado Avanzado)",
+      gemini20FlashExp: "Gemini 2.0 Flash Exp (Preview Rápido)",
+      claude46Sonnet: "Claude 4.6 Sonnet (Más Nuevo Inteligente)",
+      claude46Opus: "Claude 4.6 Opus (Más Nuevo Complexo)",
+      claude35Sonnet: "Claude 3.5 Sonnet v2 (Estándar Inteligente)",
+      claude35Haiku: "Claude 3.5 Haiku (Rápido y Económico)",
+      claude3Opus: "Claude 3 Opus (Máxima Complejidad)",
+      claude3Sonnet: "Claude 3 Sonnet (Legado Medio)",
+      claude3Haiku: "Claude 3 Haiku (Legado Rápido)"
+    }
   },
   zh: {
     title: "Understand Anything Desktop",
@@ -254,7 +311,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ignorePlaceholder: "输入忽略模式 (例如 node_modules/)...",
     ignoreRecommended: "推荐排除：",
     saveRecalculate: "保存并重新计算",
-    ignoreHelp: "排除大型文件夹 (如 node_modules、dist、.git 等) 可避免高昂的 AI 成本并加快分析速度。"
+    ignoreHelp: "排除大型文件夹 (如 node_modules、dist、.git 等) 可避免高昂的 AI 成本并加快分析速度。",
+    extremelyCheap: "极度便宜",
+    ignoreSuccessTitle: ".understandignore 更新成功！",
+    ignoreSuccessMessage: "排除规则已应用。预估和 Token 费用已根据更新后的扫描重新计算。",
+    editIgnoreRules: "编辑排除规则",
+    models: {
+      gemini35Flash: "Gemini 3.5 Flash (最新快速)",
+      gemini25Flash: "Gemini 2.5 Flash (标准快速)",
+      gemini25Pro: "Gemini 2.5 Pro (超高智能)",
+      gemini15Flash: "Gemini 1.5 Flash (传统快速)",
+      gemini15Pro: "Gemini 1.5 Pro (传统高级)",
+      gemini20FlashExp: "Gemini 2.0 Flash Exp (预览快速)",
+      claude46Sonnet: "Claude 4.6 Sonnet (最新智能)",
+      claude46Opus: "Claude 4.6 Opus (最新复杂)",
+      claude35Sonnet: "Claude 3.5 Sonnet v2 (标准智能)",
+      claude35Haiku: "Claude 3.5 Haiku (快速且经济)",
+      claude3Opus: "Claude 3 Opus (最大复杂度)",
+      claude3Sonnet: "Claude 3 Sonnet (传统中等)",
+      claude3Haiku: "Claude 3 Haiku (传统快速)"
+    }
   },
   ja: {
     title: "Understand Anything Desktop",
@@ -310,7 +386,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ignorePlaceholder: "除外パターンを入力してください (例: node_modules/)...",
     ignoreRecommended: "除外を推奨:",
     saveRecalculate: "保存して再計算",
-    ignoreHelp: "重いフォルダ (node_modules、dist、.git など) を除外することで、AIのコストを抑え、分析を高速化できます。"
+    ignoreHelp: "重いフォルダ (node_modules、dist、.git など) を除外することで、AIのコストを抑え、分析を高速化できます。",
+    extremelyCheap: "極めて安価",
+    ignoreSuccessTitle: ".understandignore が正常に更新されました！",
+    ignoreSuccessMessage: "除外ルールが適用されました。見積もりとトークンコストは、更新されたスキャンに基づいて再計算されました。",
+    editIgnoreRules: "除外ルールを編集",
+    models: {
+      gemini35Flash: "Gemini 3.5 Flash (最新・高速)",
+      gemini25Flash: "Gemini 2.5 Flash (標準・高速)",
+      gemini25Pro: "Gemini 2.5 Pro (最高インテリジェンス)",
+      gemini15Flash: "Gemini 1.5 Flash (レガシー・高速)",
+      gemini15Pro: "Gemini 1.5 Pro (レガシー・高度)",
+      gemini20FlashExp: "Gemini 2.0 Flash Exp (プレビュー・高速)",
+      claude46Sonnet: "Claude 4.6 Sonnet (最新・高度)",
+      claude46Opus: "Claude 4.6 Opus (最新・複雑)",
+      claude35Sonnet: "Claude 3.5 Sonnet v2 (標準・高度)",
+      claude35Haiku: "Claude 3.5 Haiku (高速・低コスト)",
+      claude3Opus: "Claude 3 Opus (最大複雑度)",
+      claude3Sonnet: "Claude 3 Sonnet (レガシー・中位)",
+      claude3Haiku: "Claude 3 Haiku (レガシー・高速)"
+    }
   }
 };
 
@@ -523,11 +618,11 @@ export default function App() {
 
     if (apiProvider === "gemini") {
       if (modelName.includes("pro")) {
-        // Gemini 2.5 Pro e Gemini 1.5 Pro
+        // Gemini 2.5 Pro and 1.5 Pro
         inputRate = 1.25 / 1000000;
         outputRate = 5.00 / 1000000;
       } else { 
-        // Gemini 2.5 Flash, Gemini 1.5 Flash e Gemini 2.0 Flash
+        // Flash models
         inputRate = 0.075 / 1000000;
         outputRate = 0.30 / 1000000;
       }
@@ -547,14 +642,14 @@ export default function App() {
           outputRate = 1.25 / 1000000;
         }
       } else {
-        // Claude 3.5 Sonnet e Claude 3 Sonnet
+        // Sonnet models
         inputRate = 3.00 / 1000000;
         outputRate = 15.00 / 1000000;
       }
     }
 
     const cost = (inputTokens * inputRate) + (outputTokens * outputRate);
-    if (cost < 0.005) return "USD < $0.01 (Extremamente Barato)";
+    if (cost < 0.005) return `USD < $0.01 (${t.extremelyCheap})`;
     return `USD $${cost.toFixed(3)}`;
   };
 
@@ -632,22 +727,22 @@ export default function App() {
                 >
                   {apiProvider === "gemini" ? (
                     <>
-                      <option value="gemini-3.5-flash">Gemini 3.5 Flash (Mais Novo Rápido)</option>
-                      <option value="gemini-2.5-flash">Gemini 2.5 Flash (Padrão Rápido)</option>
-                      <option value="gemini-2.5-pro">Gemini 2.5 Pro (Altíssima Inteligência)</option>
-                      <option value="gemini-1.5-flash">Gemini 1.5 Flash (Legado Rápido)</option>
-                      <option value="gemini-1.5-pro">Gemini 1.5 Pro (Legado Avançado)</option>
-                      <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash Exp (Preview Rápido)</option>
+                      <option value="gemini-3.5-flash">{t.models.gemini35Flash}</option>
+                      <option value="gemini-2.5-flash">{t.models.gemini25Flash}</option>
+                      <option value="gemini-2.5-pro">{t.models.gemini25Pro}</option>
+                      <option value="gemini-1.5-flash">{t.models.gemini15Flash}</option>
+                      <option value="gemini-1.5-pro">{t.models.gemini15Pro}</option>
+                      <option value="gemini-2.0-flash-exp">{t.models.gemini20FlashExp}</option>
                     </>
                   ) : (
                     <>
-                      <option value="claude-sonnet-4-6">Claude 4.6 Sonnet (Mais Novo Inteligente)</option>
-                      <option value="claude-opus-4-6">Claude 4.6 Opus (Mais Novo Complexo)</option>
-                      <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet v2 (Padrão Inteligência)</option>
-                      <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku (Rápido & Econômico)</option>
-                      <option value="claude-3-opus-20240229">Claude 3 Opus (Máxima Complexidade)</option>
-                      <option value="claude-3-sonnet-20240229">Claude 3 Sonnet (Legado Médio)</option>
-                      <option value="claude-3-haiku-20240307">Claude 3 Haiku (Legado Rápido)</option>
+                      <option value="claude-sonnet-4-6">{t.models.claude46Sonnet}</option>
+                      <option value="claude-opus-4-6">{t.models.claude46Opus}</option>
+                      <option value="claude-3-5-sonnet-20241022">{t.models.claude35Sonnet}</option>
+                      <option value="claude-3-5-haiku-20241022">{t.models.claude35Haiku}</option>
+                      <option value="claude-3-opus-20240229">{t.models.claude3Opus}</option>
+                      <option value="claude-3-sonnet-20240229">{t.models.claude3Sonnet}</option>
+                      <option value="claude-3-haiku-20240307">{t.models.claude3Haiku}</option>
                     </>
                   )}
                 </select>
@@ -928,7 +1023,6 @@ export default function App() {
                 className="btn btn-secondary" 
                 style={{ padding: "8px 12px", fontSize: "0.85rem", height: "36px", gap: "6px" }}
                 onClick={() => {
-                  // Forçar recarregamento do iframe redefinindo o src do iframe
                   const iframe = document.getElementById("dashboard-iframe") as HTMLIFrameElement;
                   if (iframe) iframe.src = getDashboardUrl();
                 }}
@@ -1146,17 +1240,17 @@ export default function App() {
                       <CheckCircle size={28} />
                     </div>
                     <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#fff", margin: 0 }}>
-                      .understandignore atualizado com sucesso!
+                      {t.ignoreSuccessTitle}
                     </h3>
                     <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: "1.5", margin: 0 }}>
-                      As regras de exclusão foram aplicadas. A estimativa e os custos de tokens foram recalculados com base no escaneamento atualizado.
+                      {t.ignoreSuccessMessage}
                     </p>
                     <button 
                       type="button"
                       onClick={() => setHasSavedIgnore(false)}
                       style={{ marginTop: "12px", background: "transparent", border: "none", color: "var(--primary)", cursor: "pointer", fontSize: "0.8rem", textDecoration: "underline", fontWeight: 600, padding: 0 }}
                     >
-                      Editar regras de exclusão
+                      {t.editIgnoreRules}
                     </button>
                   </div>
                 </div>
