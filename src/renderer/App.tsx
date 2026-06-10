@@ -15,6 +15,8 @@ declare global {
       startAnalysis: (payload: { projectPath: string; options: any }) => Promise<{ success: boolean; error?: string }>;
       getServerInfo: () => Promise<{ port: number; token: string }>;
       openExternal: (url: string) => void;
+      getIgnoreFile: (projectPath: string) => Promise<string>;
+      saveIgnoreFile: (projectPath: string, content: string) => Promise<{ success: boolean }>;
       onProgressUpdate: (callback: (progress: any) => void) => () => void;
     };
   }
@@ -79,7 +81,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     costTokens: "Estimated Input / Output Tokens",
     costEstimate: "Estimated AI API Cost",
     costContinue: "Confirm & Proceed",
-    costAbort: "Cancel Analysis"
+    costAbort: "Cancel Analysis",
+    ignoreTitle: "Exclude Rules (.understandignore)",
+    ignorePlaceholder: "Enter ignore patterns (e.g., node_modules/)...",
+    ignoreRecommended: "Recommended to exclude:",
+    saveRecalculate: "Save & Recalculate",
+    ignoreHelp: "Excluding heavy folders (like node_modules, dist, .git, etc.) prevents high AI costs and speeds up analysis."
   },
   "pt-BR": {
     title: "Understand Anything Desktop",
@@ -130,7 +137,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     costTokens: "Tokens Estimados (Entrada / Saída)",
     costEstimate: "Custo Estimado da API de IA",
     costContinue: "Confirmar e Continuar",
-    costAbort: "Cancelar Análise"
+    costAbort: "Cancelar Análise",
+    ignoreTitle: "Regras de Exclusão (.understandignore)",
+    ignorePlaceholder: "Digite os padrões de ignore (ex: node_modules/)...",
+    ignoreRecommended: "Recomendado excluir:",
+    saveRecalculate: "Salvar & Recalcular",
+    ignoreHelp: "Excluir pastas pesadas (como node_modules, dist, .git, etc.) evita custos elevados com a IA e acelera a análise."
   },
   es: {
     title: "Understand Anything Desktop",
@@ -181,7 +193,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     costTokens: "Tokens Estimados (Entrada / Salida)",
     costEstimate: "Costo Estimado de la API de IA",
     costContinue: "Confirmar y Continuar",
-    costAbort: "Cancelar Análisis"
+    costAbort: "Cancelar Análisis",
+    ignoreTitle: "Reglas de Exclusión (.understandignore)",
+    ignorePlaceholder: "Ingrese patrones de exclusión (ej: node_modules/)...",
+    ignoreRecommended: "Recomendado excluir:",
+    saveRecalculate: "Guardar y Recalcular",
+    ignoreHelp: "Excluir carpetas pesadas (como node_modules, dist, .git, etc.) evita costos elevados de IA y acelera el análisis."
   },
   zh: {
     title: "Understand Anything Desktop",
@@ -232,7 +249,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     costTokens: "估算输入/输出 Token 数",
     costEstimate: "估算 AI API 费用",
     costContinue: "确认并继续",
-    costAbort: "取消分析"
+    costAbort: "取消分析",
+    ignoreTitle: "排除规则 (.understandignore)",
+    ignorePlaceholder: "输入忽略模式 (例如 node_modules/)...",
+    ignoreRecommended: "推荐排除：",
+    saveRecalculate: "保存并重新计算",
+    ignoreHelp: "排除大型文件夹 (如 node_modules、dist、.git 等) 可避免高昂的 AI 成本并加快分析速度。"
   },
   ja: {
     title: "Understand Anything Desktop",
@@ -283,7 +305,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     costTokens: "見積もり入力/出力トークン",
     costEstimate: "見積もり AI API コスト",
     costContinue: "確認して続行",
-    costAbort: "分析をキャンセル"
+    costAbort: "分析をキャンセル",
+    ignoreTitle: "除外ルール (.understandignore)",
+    ignorePlaceholder: "除外パターンを入力してください (例: node_modules/)...",
+    ignoreRecommended: "除外を推奨:",
+    saveRecalculate: "保存して再計算",
+    ignoreHelp: "重いフォルダ (node_modules、dist、.git など) を除外することで、AIのコストを抑え、分析を高速化できます。"
   }
 };
 
@@ -301,6 +328,9 @@ export default function App() {
   const [recentProjects, setRecentProjects] = useState<any[]>([]);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [costDetail, setCostDetail] = useState<any | null>(null);
+
+  const recalculatingRef = useRef(false);
+  const [ignoreContent, setIgnoreContent] = useState("");
 
   const [analysisError, setAnalysisError] = useState("");
   const [progress, setProgress] = useState<ProgressState>({
@@ -339,6 +369,15 @@ export default function App() {
       logEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [logs]);
+
+  // Carregar conteúdo do arquivo .understandignore ao exibir detalhes de custo
+  useEffect(() => {
+    if (costDetail && projectPath) {
+      window.api.getIgnoreFile(projectPath).then((content) => {
+        setIgnoreContent(content || "");
+      });
+    }
+  }, [costDetail, projectPath]);
 
   // Escutar eventos de progresso da análise enviados pelo processo Main
   useEffect(() => {
@@ -439,6 +478,11 @@ export default function App() {
       setHasGraph(true);
       setView("dashboard");
     } else {
+      if (recalculatingRef.current) {
+        recalculatingRef.current = false;
+        handleStartAnalysis();
+        return;
+      }
       setAnalysisError(result.error || "Erro desconhecido durante o processamento do grafo.");
       setView("setup");
     }
@@ -995,7 +1039,7 @@ export default function App() {
         }}>
           <div className="glass-panel" style={{
             width: "100%",
-            maxWidth: "520px",
+            maxWidth: "920px",
             padding: "32px",
             border: "1px solid rgba(168, 85, 247, 0.3)",
             boxShadow: "0 0 32px rgba(168, 85, 247, 0.15)",
@@ -1007,56 +1051,152 @@ export default function App() {
               </div>
               <h2 style={{ fontSize: "1.35rem", fontWeight: 700 }}>{t.costTitle}</h2>
             </div>
-            
-            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", lineHeight: "1.5", marginBottom: "24px" }}>
-              {t.costMessage}
-            </p>
 
-            <div style={{ background: "rgba(0, 0, 0, 0.25)", border: "1px solid var(--panel-border)", borderRadius: "8px", padding: "16px", marginBottom: "28px", display: "flex", flexDirection: "column", gap: "12px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
-                <span style={{ color: "var(--text-muted)" }}>{t.costFiles}:</span>
-                <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{costDetail.totalFiles}</span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
-                <span style={{ color: "var(--text-muted)" }}>{t.costBatches}:</span>
-                <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{costDetail.totalBatches}</span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
-                <span style={{ color: "var(--text-muted)" }}>{t.costTokens}:</span>
-                <span style={{ fontWeight: 600, color: "var(--text-primary)", fontFamily: "var(--font-mono)" }}>
-                  {costDetail.inputTokens.toLocaleString()} / {costDetail.outputTokens.toLocaleString()}
-                </span>
-              </div>
-              <div style={{ height: "1px", background: "var(--panel-border)", margin: "4px 0" }}></div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--text-secondary)" }}>{t.costEstimate}:</span>
-                <span style={{ fontSize: "1.15rem", fontWeight: 800, color: "var(--primary)" }} className="glow-text">
-                  {getEstimatedCostText()}
-                </span>
-              </div>
-            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: "32px", marginBottom: "12px" }}>
+              {/* Coluna Esquerda: Estimativa de Custos */}
+              <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <div>
+                  <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", lineHeight: "1.5", marginBottom: "16px" }}>
+                    {t.costMessage}
+                  </p>
 
-            <div style={{ display: "flex", gap: "14px" }}>
-              <button 
-                className="btn btn-secondary" 
-                onClick={async () => {
-                  setCostDetail(null);
-                  await window.api.confirmAnalysis(false);
-                }}
-                style={{ flex: 1 }}
-              >
-                {t.costAbort}
-              </button>
-              <button 
-                className="btn btn-primary" 
-                onClick={async () => {
-                  setCostDetail(null);
-                  await window.api.confirmAnalysis(true);
-                }}
-                style={{ flex: 1 }}
-              >
-                {t.costContinue}
-              </button>
+                  <div style={{ background: "rgba(0, 0, 0, 0.25)", border: "1px solid var(--panel-border)", borderRadius: "8px", padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
+                      <span style={{ color: "var(--text-muted)" }}>{t.costFiles}:</span>
+                      <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{costDetail.totalFiles}</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
+                      <span style={{ color: "var(--text-muted)" }}>{t.costBatches}:</span>
+                      <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{costDetail.totalBatches}</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
+                      <span style={{ color: "var(--text-muted)" }}>{t.costTokens}:</span>
+                      <span style={{ fontWeight: 600, color: "var(--text-primary)", fontFamily: "var(--font-mono)" }}>
+                        {costDetail.inputTokens.toLocaleString()} / {costDetail.outputTokens.toLocaleString()}
+                      </span>
+                    </div>
+                    <div style={{ height: "1px", background: "var(--panel-border)", margin: "4px 0" }}></div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--text-secondary)" }}>{t.costEstimate}:</span>
+                      <span style={{ fontSize: "1.15rem", fontWeight: 800, color: "var(--primary)" }} className="glow-text">
+                        {getEstimatedCostText()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", gap: "14px", marginTop: "24px" }}>
+                  <button 
+                    className="btn btn-secondary" 
+                    onClick={async () => {
+                      setCostDetail(null);
+                      await window.api.confirmAnalysis(false);
+                    }}
+                    style={{ flex: 1 }}
+                  >
+                    {t.costAbort}
+                  </button>
+                  <button 
+                    className="btn btn-primary" 
+                    onClick={async () => {
+                      setCostDetail(null);
+                      await window.api.confirmAnalysis(true);
+                    }}
+                    style={{ flex: 1 }}
+                  >
+                    {t.costContinue}
+                  </button>
+                </div>
+              </div>
+
+              {/* Coluna Direita: Editor do Ignore */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px", borderLeft: "1px solid var(--panel-border)", paddingLeft: "32px" }}>
+                <div>
+                  <h3 style={{ fontSize: "1.05rem", fontWeight: 600, marginBottom: "4px", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <Folder size={16} color="var(--primary)" />
+                    {t.ignoreTitle}
+                  </h3>
+                  <p style={{ fontSize: "0.75rem", color: "var(--text-secondary)", lineHeight: "1.4" }}>
+                    {t.ignoreHelp}
+                  </p>
+                </div>
+
+                <textarea
+                  className="input-control"
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.8rem",
+                    height: "140px",
+                    resize: "none",
+                    background: "rgba(0, 0, 0, 0.3)",
+                    border: "1px solid var(--panel-border)",
+                    padding: "10px",
+                    borderRadius: "6px"
+                  }}
+                  placeholder={t.ignorePlaceholder}
+                  value={ignoreContent}
+                  onChange={(e) => setIgnoreContent(e.target.value)}
+                />
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>{t.ignoreRecommended}</span>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                    {["node_modules/", "dist/", "build/", "out/", ".git/", "*.lock", "*.zip", "*.mp4"].map((rule) => (
+                      <button
+                        key={rule}
+                        type="button"
+                        onClick={() => {
+                          const trimmed = ignoreContent.trim();
+                          const lines = trimmed ? trimmed.split("\n") : [];
+                          if (!lines.includes(rule) && !lines.includes(rule.slice(0, -1))) {
+                            const newContent = trimmed ? trimmed + "\n" + rule : rule;
+                            setIgnoreContent(newContent);
+                          }
+                        }}
+                        style={{
+                          background: "rgba(255, 255, 255, 0.05)",
+                          border: "1px solid var(--panel-border)",
+                          borderRadius: "4px",
+                          padding: "3px 8px",
+                          fontSize: "0.7rem",
+                          color: "var(--text-secondary)",
+                          cursor: "pointer",
+                          transition: "all 0.15s ease"
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)"}
+                      >
+                        +{rule}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  className="btn btn-secondary"
+                  style={{
+                    marginTop: "8px",
+                    background: "linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)",
+                    border: "1px solid rgba(168, 85, 247, 0.4)",
+                    color: "#fff",
+                    gap: "8px",
+                    width: "100%",
+                    justifyContent: "center",
+                    fontWeight: 600
+                  }}
+                  onClick={async () => {
+                    recalculatingRef.current = true;
+                    // Salvar o arquivo via IPC
+                    await window.api.saveIgnoreFile(projectPath, ignoreContent);
+                    // Cancelar análise ativa silenciosamente para recarregar
+                    setCostDetail(null);
+                    await window.api.confirmAnalysis(false);
+                  }}
+                >
+                  <RefreshCw size={14} />
+                  {t.saveRecalculate}
+                </button>
+              </div>
             </div>
           </div>
         </div>
