@@ -30,6 +30,20 @@ The desktop portable version was designed to solve several usability, environmen
 * **Dynamic Multi-Language Sync**: Switch the interface language dynamically. The app automatically updates your active project configuration so that the rendering dashboard matches your preferred language immediately.
 * **Secure Local Server**: Runs a secure, lightweight Express backend locally, protected by a single-use authorization token generated on startup to prevent local network breaches.
 
+---
+
+## ⚠️ AI Cost Optimization & Exclusions
+
+Because **Understand Anything** reads the actual logic of your codebase (Phase 2) to build its semantic knowledge graph, analyzing heavy third-party directories or built assets can consume excessive AI API tokens. 
+
+To prevent unnecessary costs:
+1. Inside your project folder, locate or create the `.understand-anything/` directory.
+2. Create or edit a file named `.understandignore` inside that folder.
+3. Add glob patterns for files and directories you want to ignore (e.g. `node_modules/`, `dist/`, `.git/`, logs, images).
+4. For a complete detailed setup and advanced rules, check out the comprehensive [TUTORIAL.md](file:///c:/Users/PC/Documents/Bots/Understand-Anything/docs/TUTORIAL.md)!
+
+---
+
 ### 📊 Architecture & Data Flow
 
 ```mermaid
