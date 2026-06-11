@@ -4,6 +4,19 @@ All notable updates and engineering improvements applied to this integrated grap
 
 ---
 
+## [0.3.1] — 2026-06-11
+
+### Security
+- **Fix command injection vulnerability**: Replaced unsafe `child_process.exec` calls with `child_process.execFile` in the backend orchestrator ([orquestrador.ts](file:///c:/Users/PC/Documents/Bots/Understand-Anything/src/main/orquestrador.ts)) when executing Git commands, preventing shell injection vectors.
+- **Remediation of dependency vulnerabilities**: Upgraded `concurrently` package dependency to mitigate shell-quote command injection vulnerability.
+- **Electron Hardening**:
+  - Implemented strict Content Security Policy (CSP) headers in all loaded pages inside [electron.ts](file:///c:/Users/PC/Documents/Bots/Understand-Anything/src/main/electron.ts).
+  - Enhanced URL validation when opening links externally, restricting protocols strictly to `http:` and `https:` in `shell.openExternal`.
+  - Added robust validation in the IPC bridge for loading project files, preventing path traversal and enforcing workspace constraints.
+  - Removed token exposure from the dev mode fallback error page, eliminating credential leak risks.
+
+---
+
 ## [0.3.0] — 2026-06-10
 
 ### Added
