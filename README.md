@@ -85,6 +85,17 @@ graph TD
 
 ---
 
+## 🚀 Portable Download (Quick Start)
+
+For users who just want to use the application without compiling locally:
+
+1. Go to the [Releases](https://github.com/Leosdc/understand-anything-desktop/releases) page of the repository.
+2. Download the `.zip` file for the latest version (e.g., `Understand-Anything-Desktop-win32-x64.zip`).
+3. Extract the contents to any folder on your computer.
+4. Run `Understand Anything.exe` to launch the application.
+
+---
+
 ## 🛠️ Installation & Build
 
 To compile and run the desktop application locally, ensure you have Node.js installed:
@@ -104,6 +115,17 @@ To compile and run the desktop application locally, ensure you have Node.js inst
    ```
    *(This command compiles the React frontend, Electron backend, bundles all dependencies, and packages the desktop app inside the `dist-package/` directory).*
 4. Once completed, go to the `dist-package/Understand Anything-win32-x64/` directory and run `Understand Anything.exe`.
+
+---
+
+## 🔒 Data Privacy & Security
+
+Understand Anything Desktop is designed with local-first privacy:
+
+* **Zero Telemetry**: The app contains no trackers, telemetry, or third-party cloud analytics.
+* **Local API Keys**: Your Gemini and Claude API keys are stored locally on your machine in `%APPDATA%\Understand Anything\settings.json` and are never shared or sent to external servers.
+* **Local Graph Processing**: Your codebase files are analyzed locally. The generated semantic graph (`knowledge-graph.json`) is saved strictly within your own project directory under the hidden `.understand-anything/` folder.
+* **Direct AI Requests**: The only external network traffic consists of direct, secure HTTPS calls to the official Google Gemini (`https://generativelanguage.googleapis.com`) and Anthropic Claude (`https://api.anthropic.com`) endpoints to perform semantic code analysis.
 
 ---
 

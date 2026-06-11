@@ -6,7 +6,9 @@
 
 ## 🚀 快速入门与 API 密钥配置
 
-在本地使用 `npm run build` 命令构建应用程序后，通过运行位于 `dist-package/Understand Anything-win32-x64/` 目录中的 `Understand Anything.exe` 文件来打开应用程序。
+如果您在本地使用 `npm run build` 命令构建了应用程序，通过运行位于 `dist-package/Understand Anything-win32-x64/` 目录中的 `Understand Anything.exe` 文件来打开应用程序。
+
+或者，如果您从 GitHub 的 [Releases](https://github.com/Leosdc/understand-anything-desktop/releases) 页面下载了便携版，只需解压 `.zip` 压缩包（例如：`Understand-Anything-Desktop-win32-x64.zip`）并直接运行其中的 `Understand Anything.exe` 即可启动应用程序。
 
 Understand Anything 依赖先进的大语言模型 (LLM) 来阅读、分类和描述您的代码逻辑。要使用该应用，您需要准备 Google Gemini 或 Anthropic Claude 的个人 API 密钥 (API Key)：
 
@@ -117,3 +119,14 @@ Understand Anything 依赖先进的大语言模型 (LLM) 来阅读、分类和�
   - **红色 (Complex)**：高度耦合或包含极为复杂的逻辑。这些红色节点是进行代码重构的最佳目标！
 - **历史最近项目**：
   - 设置屏幕会列出您最近分析过的 5 个项目。点击它们可以在 1 秒内瞬间加载出 图谱，无需重复分析，也不产生任何 AI 费用。
+
+---
+
+## 🔒 数据隐私与安全
+
+Understand Anything Desktop 秉持本地优先的隐私设计理念：
+
+* **零遥测技术**: 应用本身不包含任何追踪器、遥测数据或第三方云端分析工具。
+* **本地 API 密钥**: 您的 Gemini 和 Claude API 密钥将以安全方式保存在本地路径 `%APPDATA%\Understand Anything\settings.json` 中，绝对不会被共享或发送给任何第三方服务器。
+* **本地图谱处理**: 您项目中的代码文件完全在本地完成分析。分析生成的语义知识图谱（`knowledge-graph.json`）仅保存在您所分析项目的 `.understand-anything/` 隐藏文件夹下。
+* **直接的 AI 请求**: 唯一的外部网络流量是直接、安全地向官方 Google Gemini (`https://generativelanguage.googleapis.com`) 和 Anthropic Claude (`https://api.anthropic.com`) 接口发送 HTTPS 语义分析请求。

@@ -86,6 +86,17 @@ graph TD
 
 ---
 
+## 🚀 便携版下载 (快速开始)
+
+对于仅需要使用应用程序而无需在本地进行编译的用户：
+
+1. 前往 GitHub 仓库的 [Releases](https://github.com/Leosdc/understand-anything-desktop/releases) 页面。
+2. 下载最新版本的 `.zip` 压缩包（例如：`Understand-Anything-Desktop-win32-x64.zip`）。
+3. 将压缩包内容解压到您电脑的任意文件夹中。
+4. 双击运行 `Understand Anything.exe` 启动应用程序。
+
+---
+
 ## 🛠️ 安装与构建
 
 要在您的本地机器上编译和运行桌面端应用程序，请确保已安装 Node.js：
@@ -105,6 +116,17 @@ graph TD
    ```
    *(该命令将编译 React 前端、Node.js 后端，打包所有解析器依赖项，并在 `dist-package/` 目录中生成独立的应用程序文件夹)。*
 4. 构建完成后，前往 `dist-package/Understand Anything-win32-x64/` 目录并运行 `Understand Anything.exe`。
+
+---
+
+## 🔒 数据隐私与安全
+
+Understand Anything Desktop 秉持本地优先的隐私设计理念：
+
+* **零遥测技术**: 应用本身不包含任何追踪器、遥测数据或第三方云端分析工具。
+* **本地 API 密钥**: 您的 Gemini 和 Claude API 密钥将以安全方式保存在本地路径 `%APPDATA%\Understand Anything\settings.json` 中，绝对不会被共享或发送给任何第三方服务器。
+* **本地图谱处理**: 您项目中的代码文件完全在本地完成分析。分析生成的语义知识图谱（`knowledge-graph.json`）仅保存在您所分析项目的 `.understand-anything/` 隐藏文件夹下。
+* **直接的 AI 请求**: 唯一的外部网络流量是直接、安全地向官方 Google Gemini (`https://generativelanguage.googleapis.com`) 和 Anthropic Claude (`https://api.anthropic.com`) 接口发送 HTTPS 语义分析请求。
 
 ---
 

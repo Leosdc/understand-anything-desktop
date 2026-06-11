@@ -6,7 +6,9 @@ Bienvenido a la guía oficial de usuario de **Understand Anything Desktop**. Est
 
 ## 🚀 Primeros Pasos y Configuración de API Key
 
-Después de compilar la aplicación localmente utilizando el comando `npm run build`, abra la aplicación ejecutando el archivo `Understand Anything.exe` ubicado en el directorio `dist-package/Understand Anything-win32-x64/`.
+Si compiló la aplicación localmente utilizando el comando `npm run build`, abra la aplicación ejecutando el archivo `Understand Anything.exe` ubicado en el directorio `dist-package/Understand Anything-win32-x64/`.
+
+Alternativamente, si descargó la versión portátil de la pestaña de [Releases](https://github.com/Leosdc/understand-anything-desktop/releases) de GitHub, simplemente extraiga el archivo `.zip` (ej. `Understand-Anything-Desktop-win32-x64.zip`) y ejecute el archivo `Understand Anything.exe` directamente.
 
 Understand Anything utiliza Modelos de Lenguaje de Gran Escala (LLMs) para leer, clasificar y describir la lógica de su código. Para utilizar la aplicación, necesitará una clave API (API Key) personal de Google Gemini o de Anthropic Claude:
 
@@ -118,3 +120,14 @@ Una vez finalizado el análisis, el panel carga un lienzo interactivo con los no
   - **Rojo (Complex)**: Gran acoplamiento o lógica compleja. ¡Excelente candidato para refactorización!
 - **Proyectos Recientes**:
   - El historial en la pantalla de configuración permite cargar los últimos 5 proyectos analizados. Si el gráfico existe, el panel se abre en 1 segundo sin generar llamadas adicionales de IA.
+
+---
+
+## 🔒 Privacidad y Seguridad de Datos
+
+Understand Anything Desktop está diseñado con la privacidad local en primer lugar:
+
+* **Cero Telemetría**: La aplicación no contiene rastreadores, telemetria o servicios de análisis en la nube de terceros.
+* **Claves de API Locales**: Sus claves de API (Gemini y Claude) se almacenan localmente en su máquina en `%APPDATA%\Understand Anything\settings.json` y nunca se comparten ni se envían a servidores externos.
+* **Procesamiento de Gráfico Local**: Los archivos de su base de código se analizan localmente. El gráfico semántico generado (`knowledge-graph.json`) se guarda estrictamente dentro del directorio de su propio proyecto bajo la carpeta oculta `.understand-anything/`.
+* **Peticiones de IA Directas**: El único tráfico de red externo consiste en llamadas HTTPS directas y seguras enviadas a los endpoints oficiales de Google Gemini (`https://generativelanguage.googleapis.com`) y Anthropic Claude (`https://api.anthropic.com`) para realizar el análisis de código.

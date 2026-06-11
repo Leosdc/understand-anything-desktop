@@ -85,6 +85,17 @@ graph TD
 
 ---
 
+## 🚀 Descarga Portátil (Inicio Rápido)
+
+Para usuarios que solo desean utilizar la aplicación sin compilar localmente:
+
+1. Vaya a la página de [Releases](https://github.com/Leosdc/understand-anything-desktop/releases) del repositorio en GitHub.
+2. Descargue el archivo `.zip` de la versión más reciente (ej. `Understand-Anything-Desktop-win32-x64.zip`).
+3. Extraiga el contenido en cualquier carpeta de su computadora.
+4. Ejecute el archivo `Understand Anything.exe` para iniciar la aplicación.
+
+---
+
 ## 🛠️ Instalación y Compilación
 
 Para compilar y ejecutar la aplicación de escritorio localmente en su máquina, asegúrese de tener instalado Node.js:
@@ -104,6 +115,17 @@ Para compilar y ejecutar la aplicación de escritorio localmente en su máquina,
    ```
    *(Este comando compila el frontend de React, el backend de Node.js, agrupa todas las dependencias del parser y genera la carpeta de la aplicación autónoma dentro de `dist-package/`).*
 4. Una vez completado, vaya al directorio `dist-package/Understand Anything-win32-x64/` y ejecute `Understand Anything.exe`.
+
+---
+
+## 🔒 Privacidad y Seguridad de Datos
+
+Understand Anything Desktop está diseñado con la privacidad local en primer lugar:
+
+* **Cero Telemetría**: La aplicación no contiene rastreadores, telemetria o servicios de análisis en la nube de terceros.
+* **Claves de API Locales**: Sus claves de API (Gemini y Claude) se almacenan localmente en su máquina en `%APPDATA%\Understand Anything\settings.json` y nunca se comparten ni se envían a servidores externos.
+* **Procesamiento de Gráfico Local**: Los archivos de su base de código se analizan localmente. El gráfico semántico generado (`knowledge-graph.json`) se guarda estrictamente dentro del directorio de su propio proyecto bajo la carpeta oculta `.understand-anything/`.
+* **Peticiones de IA Directas**: El único tráfico de red externo consiste en llamadas HTTPS directas y seguras enviadas a los endpoints oficiales de Google Gemini (`https://generativelanguage.googleapis.com`) y Anthropic Claude (`https://api.anthropic.com`) para realizar el análisis de código.
 
 ---
 

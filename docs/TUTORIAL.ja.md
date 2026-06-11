@@ -8,6 +8,8 @@
 
 ローカルで `npm run build` コマンドを使用してアプリケーションをビルドした後、`dist-package/Understand Anything-win32-x64/` ディレクトリにある `Understand Anything.exe` ファイルを実行してアプリを起動します。
 
+あるいは、GitHubリポジトリの [Releases](https://github.com/Leosdc/understand-anything-desktop/releases) タブからポータブル版をダウンロードした場合は、`.zip` ファイル（例: `Understand-Anything-Desktop-win32-x64.zip`）を解凍し、中にある `Understand Anything.exe` を直接実行するだけで起動できます。
+
 Understand Anything は、高度な大規模言語モデル（LLM）を使用してコードロジックを読み取り、分類し、説明します。アプリケーションを使用するには、Google Gemini または Anthropic Claude の個人用 API キーが必要です。
 
 1. **API キーの取得**:
@@ -117,3 +119,14 @@ Understand Anything は、高度な大規模言語モデル（LLM）を使用し
   - **赤色 (Complex)**: 結合度が高く、複雑なロジックを含みます。リファクタリングを検討する最適な対象です！
 - **履歴プロジェクト**:
   - 設定画面には、最近分析した 5 つのプロジェクトが履歴として表示されます。クリックすると、AI への再問い合わせをすることなく、1 秒で グラフが読み込まれます。
+
+---
+
+## 🔒 データプライバシーとセキュリティ
+
+Understand Anything Desktopは、ローカルファーストのプライバシー設計となっています：
+
+* **ゼロテレメトリ**: アプリには、トラッカー、テレメトリ、またはサードパーティのクラウド分析機能は一切含まれていません。
+* **ローカルAPIキー**: GeminiおよびClaudeのAPIキーは、ローカルマシンの `%APPDATA%\Understand Anything\settings.json` に保存され、外部のサーバーと共有されたり送信されたりすることはありません。
+* **ローカルグラフ処理**: コードベースのファイルはローカルで分析されます。生成されたセマンティックグラフ（`knowledge-graph.json`）は、プロジェクトディレクトリ内の非表示フォルダ `.understand-anything/` の下にのみ保存されます。
+* **直接的なAIリクエスト**: 外部ネットワークへの通信は、セマンティックコード分析を実行するために、Google Gemini（`https://generativelanguage.googleapis.com`）およびAnthropic Claude（`https://api.anthropic.com`）の公式エンドポイントへの直接的かつ安全なHTTPS呼び出しのみで構成されます。

@@ -6,7 +6,9 @@ Welcome to the official user guide for **Understand Anything Desktop**. This gui
 
 ## 🚀 Quick Start & API Key Setup
 
-Once you have built the application locally using `npm run build`, open the app by executing `Understand Anything.exe` located in the `dist-package/Understand Anything-win32-x64/` directory.
+If you built the application locally using `npm run build`, open the app by executing `Understand Anything.exe` located in the `dist-package/Understand Anything-win32-x64/` directory.
+
+Alternatively, if you downloaded the portable version from the [Releases](https://github.com/Leosdc/understand-anything-desktop/releases) tab on GitHub, simply extract the `.zip` file (e.g., `Understand-Anything-Desktop-win32-x64.zip`) and run the `Understand Anything.exe` executable directly.
 
 Understand Anything uses advanced Large Language Models (LLMs) to read, categorize, and describe your code. To use the app, you need a personal API Key from either Google Gemini or Anthropic Claude:
 
@@ -118,3 +120,14 @@ Once the analysis is complete, the dashboard loads an interactive canvas:
   - **Red (Complex)**: High dependency count or complex logic. These nodes are great targets for refactoring!
 - **Recent Projects**:
   - The setup screen lists your last 5 analyzed folders. Clicking them loads the graph instantly (1 second) without any LLM cost.
+
+---
+
+## 🔒 Data Privacy & Security
+
+Understand Anything Desktop is designed with local-first privacy:
+
+* **Zero Telemetry**: The app contains no trackers, telemetry, or third-party cloud analytics.
+* **Local API Keys**: Your Gemini and Claude API keys are stored locally on your machine in `%APPDATA%\Understand Anything\settings.json` and are never shared or sent to external servers.
+* **Local Graph Processing**: Your codebase files are analyzed locally. The generated semantic graph (`knowledge-graph.json`) is saved strictly within your own project directory under the hidden `.understand-anything/` folder.
+* **Direct AI Requests**: The only external network traffic consists of direct, secure HTTPS calls to the official Google Gemini (`https://generativelanguage.googleapis.com`) and Anthropic Claude (`https://api.anthropic.com`) endpoints to perform semantic code analysis.

@@ -84,6 +84,17 @@ graph TD
 
 ---
 
+## 🚀 ポータブル版のダウンロード (クイックスタート)
+
+ローカルでコンパイルせずに、アプリケーションを直接使用したいユーザー向け：
+
+1. GitHubリポジトリの [Releases](https://github.com/Leosdc/understand-anything-desktop/releases) ページに移動します。
+2. 最新バージョンの `.zip` ファイル（例: `Understand-Anything-Desktop-win32-x64.zip`）をダウンロードします。
+3. 任意のフォルダに内容を解凍します。
+4. `Understand Anything.exe` を実行してアプリケーションを起動します。
+
+---
+
 ## 🛠️ インストールとビルド
 
 デスクトップアプリケーションをローカルでコンパイルして実行するには、Node.js がインストールされていることを確認してください：
@@ -103,6 +114,17 @@ graph TD
    ```
    *(このコマンドは、React フロントエンド、Node.js バックエンドをコンパイルし、すべてのパーサー依存関係をバンドルして、`dist-package/` ディレクトリ内にスタンドアロンのアプリケーションフォルダを生成します)。*
 4. ビルド完了後、`dist-package/Understand Anything-win32-x64/` ディレクトリに移動し、`Understand Anything.exe` を実行します。
+
+---
+
+## 🔒 データプライバシーとセキュリティ
+
+Understand Anything Desktopは、ローカルファーストのプライバシー設計となっています：
+
+* **ゼロテレメトリ**: アプリには、トラッカー、テレメトリ、またはサードパーティのクラウド分析機能は一切含まれていません。
+* **ローカルAPIキー**: GeminiおよびClaudeのAPIキーは、ローカルマシンの `%APPDATA%\Understand Anything\settings.json` に保存され、外部のサーバーと共有されたり送信されたりすることはありません。
+* **ローカルグラフ処理**: コードベースのファイルはローカルで分析されます。生成されたセマンティックグラフ（`knowledge-graph.json`）は、プロジェクトディレクトリ内の非表示フォルダ `.understand-anything/` の下にのみ保存されます。
+* **直接的なAIリクエスト**: 外部ネットワークへの通信は、セマンティックコード分析を実行するために、Google Gemini（`https://generativelanguage.googleapis.com`）およびAnthropic Claude（`https://api.anthropic.com`）の公式エンドポイントへの直接的かつ安全なHTTPS呼び出しのみで構成されます。
 
 ---
 

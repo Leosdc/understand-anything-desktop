@@ -85,6 +85,17 @@ graph TD
 
 ---
 
+## 🚀 Download Portátil (Instalação Rápida)
+
+Para usuários que desejam apenas utilizar o aplicativo sem necessidade de compilar código localmente:
+
+1. Vá para a página de [Releases](https://github.com/Leosdc/understand-anything-desktop/releases) do repositório no GitHub.
+2. Baixe o arquivo `.zip` da versão mais recente (ex: `Understand-Anything-Desktop-win32-x64.zip`).
+3. Extraia o conteúdo em qualquer pasta do seu computador.
+4. Execute o arquivo `Understand Anything.exe` para iniciar o aplicativo.
+
+---
+
 ## 🛠️ Instalação & Compilação
 
 Para compilar e rodar a aplicação desktop localmente em sua máquina, certifique-se de ter o Node.js instalado:
@@ -104,6 +115,17 @@ Para compilar e rodar a aplicação desktop localmente em sua máquina, certifiq
    ```
    *(Este comando compila o front-end React, o backend Node.js, empacota todas as dependências de parser e gera a pasta do aplicativo autônomo dentro de `dist-package/`).*
 4. Após a conclusão, acesse a pasta `dist-package/Understand Anything-win32-x64/` e execute o arquivo `Understand Anything.exe`.
+
+---
+
+## 🔒 Privacidade e Segurança de Dados
+
+O Understand Anything Desktop foi projetado com a privacidade local em primeiro lugar:
+
+* **Zero Telemetria**: O aplicativo não possui rastreadores, telemetria ou comunicação com servidores de análise em nuvem de terceiros.
+* **Chaves de API Locais**: Suas chaves de API (Gemini e Claude) são salvas localmente no seu computador em `%APPDATA%\Understand Anything\settings.json` e nunca são compartilhadas ou expostas.
+* **Processamento Local do Grafo**: Os arquivos do seu código são analisados localmente. O grafo semântico gerado (`knowledge-graph.json`) é salvo estritamente dentro da pasta do seu próprio projeto sob o diretório oculto `.understand-anything/`.
+* **Chamadas de IA Diretas**: As únicas conexões de rede externas são requisições HTTPS diretas e seguras enviadas aos servidores oficiais do Google Gemini (`https://generativelanguage.googleapis.com`) e Anthropic Claude (`https://api.anthropic.com`) para realizar as leituras de código.
 
 ---
 

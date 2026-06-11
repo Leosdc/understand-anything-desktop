@@ -9,7 +9,7 @@
     "build:renderer": "vite build",
     "build:main": "esbuild src/main/electron.ts --bundle --platform=node --target=node22 --external:electron --outfile=dist/main/electron.cjs --format=cjs && esbuild src/main/preload.ts --bundle --platform=node --target=node22 --external:electron --outfile=dist/main/preload.cjs --format=cjs && node scripts/copy-assets.js",
     "dev": "concurrently \"npm run dev:renderer\" \"npm run build:main\" \"electron .\"",
-    "build": "npm run build:renderer && npm run build:main && electron-packager . \"Understand Anything\" --platform=win32 --arch=x64 --out=dist-package --overwrite --no-prune --ignore=\"^/node_modules($|/)\""
+    "build": "npm run build:renderer && npm run build:main && electron-packager . \"Understand Anything\" --platform=win32 --arch=x64 --out=dist-package --overwrite --no-prune --ignore=\"^/(node_modules|temp-plugin|packages|dist-package|src|dashboard|skills|docs|scripts|assets|\\.github|\\.git)($|/)\""
   },
   "build": {
     "appId": "com.understandanything.desktop",
