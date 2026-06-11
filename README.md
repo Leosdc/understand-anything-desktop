@@ -85,18 +85,9 @@ graph TD
 
 ---
 
-## 🛠️ Installation & Usage
+## 🛠️ Installation & Build
 
-You can download the compiled portable folder directly or build it yourself. No Python or C++ compilers are required!
-
-### Method 1: Running the Pre-compiled Portable Version (.exe)
-1. Go to the [dist-package/Understand Anything-win32-x64](https://github.com/Leosdc/understand-anything-desktop/tree/main/dist-package/Understand%20Anything-win32-x64) directory.
-2. Double-click `Understand Anything.exe`.
-3. Paste your **Google Gemini** or **Anthropic Claude** API key (stored securely on your machine).
-4. Select a project folder and click **Analisar Repositório**.
-
-### Method 2: Building from Source
-If you want to compile the desktop app locally, ensure you have Node.js installed:
+To compile and run the desktop application locally, ensure you have Node.js installed:
 
 1. Clone the repository:
    ```bash
@@ -107,11 +98,12 @@ If you want to compile the desktop app locally, ensure you have Node.js installe
    ```bash
    npm install
    ```
-3. Build the application and package the portable `.exe`:
+3. Build and package the portable executable (`.exe`):
    ```bash
    npm run build
    ```
-   *(This single command compiles the React frontend, Electron backend, copies all assets, and packages the desktop app in the `dist-package/` folder).*
+   *(This command compiles the React frontend, Electron backend, bundles all dependencies, and packages the desktop app inside the `dist-package/` directory).*
+4. Once completed, go to the `dist-package/Understand Anything-win32-x64/` directory and run `Understand Anything.exe`.
 
 ---
 
