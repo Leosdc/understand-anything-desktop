@@ -86,33 +86,25 @@ graph TD
 
 ---
 
-## 🛠️ 安装与使用
+## 🛠️ 安装与构建
 
-您可以直接下载预编译好的便携式文件夹，或自行构建项目。无需安装 Python 环境或 C++ 编译器！
-
-### 方法一：运行预编译便携版 (.exe)
-1. 访问目录 [dist-package/Understand Anything-win32-x64](https://github.com/Leosdc/understand-anything-desktop/tree/main/dist-package/Understand%20Anything-win32-x64)。
-2. 双击运行 `Understand Anything.exe`。
-3. 输入您的 **Google Gemini** 或 **Anthropic Claude** API 密钥（安全地保存在本地）。
-4. 选择您的项目文件夹并点击 **Analisar Repositório**（分析代码库）。
-
-### 方法二：从源码构建
-如果您希望在本地编译桌面端应用程序，请确保已安装 Node.js：
+要在您的本地机器上编译和运行桌面端应用程序，请确保已安装 Node.js：
 
 1. 克隆仓库：
    ```bash
    git clone https://github.com/Leosdc/understand-anything-desktop.git
    cd understand-anything-desktop
    ```
-2. 安装依赖项：
+2. 安装依赖：
    ```bash
    npm install
    ```
-3. 构建应用程序并打包便携式 `.exe`：
+3. 构建应用程序并打包便携式可执行文件 (`.exe`)：
    ```bash
    npm run build
    ```
-   *(该单一命令将生成 React 前端，使用 esbuild 编译 Node.js 后端，复制所有必要资源，并在 `dist-package/` 文件夹中生成便携式可执行文件)。*
+   *(该命令将编译 React 前端、Node.js 后端，打包所有解析器依赖项，并在 `dist-package/` 目录中生成独立的应用程序文件夹)。*
+4. 构建完成后，前往 `dist-package/Understand Anything-win32-x64/` 目录并运行 `Understand Anything.exe`。
 
 ---
 
