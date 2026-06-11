@@ -6,6 +6,8 @@ Welcome to the official user guide for **Understand Anything Desktop**. This gui
 
 ## 🚀 Quick Start & API Key Setup
 
+Once you have built the application locally using `npm run build`, open the app by executing `Understand Anything.exe` located in the `dist-package/Understand Anything-win32-x64/` directory.
+
 Understand Anything uses advanced Large Language Models (LLMs) to read, categorize, and describe your code. To use the app, you need a personal API Key from either Google Gemini or Anthropic Claude:
 
 1. **Get an API Key**:
