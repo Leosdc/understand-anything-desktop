@@ -6,6 +6,8 @@
 
 ## 🚀 クイックスタートと API キーの設定
 
+ローカルで `npm run build` コマンドを使用してアプリケーションをビルドした後、`dist-package/Understand Anything-win32-x64/` ディレクトリにある `Understand Anything.exe` ファイルを実行してアプリを起動します。
+
 Understand Anything は、高度な大規模言語モデル（LLM）を使用してコードロジックを読み取り、分類し、説明します。アプリケーションを使用するには、Google Gemini または Anthropic Claude の個人用 API キーが必要です。
 
 1. **API キーの取得**:
