@@ -6,6 +6,8 @@ Bienvenido a la guía oficial de usuario de **Understand Anything Desktop**. Est
 
 ## 🚀 Primeros Pasos y Configuración de API Key
 
+Después de compilar la aplicación localmente utilizando el comando `npm run build`, abra la aplicación ejecutando el archivo `Understand Anything.exe` ubicado en el directorio `dist-package/Understand Anything-win32-x64/`.
+
 Understand Anything utiliza Modelos de Lenguaje de Gran Escala (LLMs) para leer, clasificar y describir la lógica de su código. Para utilizar la aplicación, necesitará una clave API (API Key) personal de Google Gemini o de Anthropic Claude:
 
 1. **Obtener una API Key**:
