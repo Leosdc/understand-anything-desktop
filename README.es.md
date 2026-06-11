@@ -85,18 +85,9 @@ graph TD
 
 ---
 
-## 🛠️ Instalación y Uso
+## 🛠️ Instalación y Compilación
 
-Puede descargar la carpeta portátil precompilada directamente o compilar el proyecto usted mismo. ¡No se requieren dependencias de Python o compiladores de C++!
-
-### Método 1: Ejecución de la Versión Portátil Precompilada (.exe)
-1. Vaya al directorio [dist-package/Understand Anything-win32-x64](https://github.com/Leosdc/understand-anything-desktop/tree/main/dist-package/Understand%20Anything-win32-x64).
-2. Haga doble clic en `Understand Anything.exe`.
-3. Inserte su clave API de **Google Gemini** o **Anthropic Claude** (guardada localmente de forma segura).
-4. Elija la carpeta de su proyecto y haga clic en **Analizar Repositorio**.
-
-### Método 2: Compilación desde el Código Fuente
-Si desea compilar la aplicación de escritorio localmente, asegúrese de tener Node.js instalado:
+Para compilar y ejecutar la aplicación de escritorio localmente en su máquina, asegúrese de tener instalado Node.js:
 
 1. Clone el repositorio:
    ```bash
@@ -107,11 +98,12 @@ Si desea compilar la aplicación de escritorio localmente, asegúrese de tener N
    ```bash
    npm install
    ```
-3. Compile el front-end, backend y empaquete la aplicación portátil:
+3. Compile la aplicación y empaquete el ejecutable portátil (`.exe`):
    ```bash
    npm run build
    ```
-   *(Este comando único genera el front-end de React, compila el backend en Node.js usando esbuild, copia los assets y genera el ejecutable portátil en `dist-package/`).*
+   *(Este comando compila el frontend de React, el backend de Node.js, agrupa todas las dependencias del parser y genera la carpeta de la aplicación autónoma dentro de `dist-package/`).*
+4. Una vez completado, vaya al directorio `dist-package/Understand Anything-win32-x64/` y ejecute `Understand Anything.exe`.
 
 ---
 
