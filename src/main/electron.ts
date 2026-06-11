@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, session, shell } from "electron";
 import path from "path";
 import fs from "fs";
 import crypto from "crypto";
@@ -162,7 +162,7 @@ function startLocalServer(port = 5173): Promise<number> {
     } else {
       // Se não existir, avisa em console (desenvolvimento)
       expressApp.get("/", (req, res) => {
-        res.send(`<h1>Servidor Ativo</h1><p>Token de acesso: <code>${ACCESS_TOKEN}</code></p><p>Nota: Dashboard React não encontrado em <code>${dashboardDist}</code>. Roda em dev mode para se conectar.</p>`);
+        res.send(`<h1>Servidor Ativo</h1><p>Dashboard React não encontrado em <code>${dashboardDist}</code>. Execute o build do dashboard ou conecte-se via dev server.</p>`);
       });
     }
 
@@ -213,6 +213,18 @@ function createWindow(port: number) {
 }
 
 app.whenReady().then(async () => {
+  // Configurar Content Security Policy (CSP) para a sessão padrão
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        "Content-Security-Policy": [
+          "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://127.0.0.1:*; img-src 'self' data:; font-src 'self' data:; frame-src http://127.0.0.1:*;"
+        ]
+      }
+    });
+  });
+
   try {
     const port = await startLocalServer();
     createWindow(port);
@@ -320,13 +332,25 @@ ipcMain.handle("select-project", async () => {
   };
 });
 
-// Abrir link no navegador padrão do sistema
+// Abrir link no navegador padrão do sistema (somente HTTP/HTTPS)
 ipcMain.on("open-external", (_, url) => {
-  shell.openExternal(url);
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol === "https:" || parsed.protocol === "http:") {
+      shell.openExternal(url);
+    }
+  } catch {
+    // URL inválida — ignorar silenciosamente
+  }
 });
 
 // Carregar projeto recente
 ipcMain.handle("load-project", (_, projectPath) => {
+  // Validar que o caminho existe e é um diretório antes de aceitar
+  if (typeof projectPath !== "string" || !fs.existsSync(projectPath) || !fs.statSync(projectPath).isDirectory()) {
+    throw new Error("Caminho do projeto inválido ou não é um diretório.");
+  }
+
   activeProjectPath = projectPath;
   const graphPath = path.join(projectPath, ".understand-anything/knowledge-graph.json");
   const hasGraph = fs.existsSync(graphPath);
