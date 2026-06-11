@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
-import { exec } from "child_process";
+import { execFile } from "child_process";
 import { promisify } from "util";
 
-const execAsync = promisify(exec);
+const execFileAsync = promisify(execFile);
 
 // Controle de cancelamento da análise
 let activeAnalysisCancelled = false;
@@ -1223,7 +1223,7 @@ export async function runAnalysis(
 
   // Roda scan-project.mjs
   try {
-    await execAsync(`node "${scanScript}" "${projectPath}" "${scanOut}"`);
+    await execFileAsync("node", [scanScript, projectPath, scanOut]);
   } catch (err: any) {
     throw new Error(`Falha ao executar scan-project: ${err.message}`);
   }
@@ -1246,7 +1246,7 @@ export async function runAnalysis(
 
   // Roda extract-import-map.mjs
   try {
-    await execAsync(`node "${importScript}" "${importIn}" "${importOut}"`);
+    await execFileAsync("node", [importScript, importIn, importOut]);
   } catch (err: any) {
     throw new Error(`Falha ao executar extract-import-map: ${err.message}`);
   }
@@ -1357,7 +1357,7 @@ Gere o JSON no seguinte formato estrito:
 
   const batchScript = path.join(pluginRoot, "skills/understand/compute-batches.mjs");
   try {
-    await execAsync(`node "${batchScript}" "${projectPath}"`);
+    await execFileAsync("node", [batchScript, projectPath]);
   } catch (err: any) {
     throw new Error(`Falha ao executar compute-batches: ${err.message}`);
   }
@@ -1850,7 +1850,7 @@ Responda em formato JSON estrito:
   fs.writeFileSync(fpIn, JSON.stringify(fpInput, null, 2), "utf-8");
 
   try {
-    await execAsync(`node "${fpScript}" "${fpIn}"`);
+    await execFileAsync("node", [fpScript, fpIn]);
   } catch (err: any) {
     throw new Error(`Falha ao executar build-fingerprints: ${err.message}`);
   }
