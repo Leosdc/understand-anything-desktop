@@ -38,8 +38,8 @@ jobs:
       - name: Compress Release Files
         run: |
           cd dist-package
-          powershell Compress-Archive -Path "Understand Anything-win32-x64" -DestinationPath "../Understand-Anything-Desktop-win32-x64.zip"
-        shell: cmd
+          Compress-Archive -Path "Understand Anything-win32-x64" -DestinationPath "../Understand-Anything-Desktop-win32-x64.zip"
+        shell: pwsh
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
