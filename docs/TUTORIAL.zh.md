@@ -6,6 +6,8 @@
 
 ## 🚀 快速入门与 API 密钥配置
 
+在本地使用 `npm run build` 命令构建应用程序后，通过运行位于 `dist-package/Understand Anything-win32-x64/` 目录中的 `Understand Anything.exe` 文件来打开应用程序。
+
 Understand Anything 依赖先进的大语言模型 (LLM) 来阅读、分类和描述您的代码逻辑。要使用该应用，您需要准备 Google Gemini 或 Anthropic Claude 的个人 API 密钥 (API Key)：
 
 1. **获取 API 密钥**：
