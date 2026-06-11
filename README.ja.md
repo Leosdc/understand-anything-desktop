@@ -84,18 +84,9 @@ graph TD
 
 ---
 
-## 🛠️ インストールと使用方法
+## 🛠️ インストールとビルド
 
-ビルド済みのポータブルフォルダを直接ダウンロードするか、ご自身でプロジェクトをビルドできます。Python 環境や C++ コンパイラのインストールは不要です！
-
-### 方法 1：ビルド済みのポータブルバージョン (.exe) の実行
-1. ディレクトリ [dist-package/Understand Anything-win32-x64](https://github.com/Leosdc/understand-anything-desktop/tree/main/dist-package/Understand%20Anything-win32-x64) にアクセスします。
-2. `Understand Anything.exe` をダブルクリックします。
-3. **Google Gemini** または **Anthropic Claude** の API キーを入力します（ローカルに安全に保存されます）。
-4. プロジェクトのフォルダを選択し、**Analisar Repositório**（分析実行）をクリックします。
-
-### 方法 2：ソースコードからのビルド
-ローカルでデスクトップアプリをコンパイルしたい場合は、Node.js がインストールされていることを確認してください：
+デスクトップアプリケーションをローカルでコンパイルして実行するには、Node.js がインストールされていることを確認してください：
 
 1. リポジトリをクローンします：
    ```bash
@@ -106,11 +97,12 @@ graph TD
    ```bash
    npm install
    ```
-3. アプリケーションをビルドし、ポータブル `.exe` をパッケージングします：
+3. アプリケーションをビルドし、ポータブル実行ファイル (`.exe`) をパッケージングします：
    ```bash
    npm run build
    ```
-   *(この単一のコマンドで、React フロントエンドの生成、esbuild を使用した Node.js バックエンドのコンパイル、必要なアセットのコピー、および `dist-package/` フォルダ内へのポータブル実行ファイルの作成がすべて行われます)。*
+   *(このコマンドは、React フロントエンド、Node.js バックエンドをコンパイルし、すべてのパーサー依存関係をバンドルして、`dist-package/` ディレクトリ内にスタンドアロンのアプリケーションフォルダを生成します)。*
+4. ビルド完了後、`dist-package/Understand Anything-win32-x64/` ディレクトリに移動し、`Understand Anything.exe` を実行します。
 
 ---
 
