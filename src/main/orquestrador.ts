@@ -550,7 +550,8 @@ const LOCALIZED_STRINGS: Record<string, Record<string, any>> = {
 async function callLLM(
   prompt: string,
   systemInstruction: string,
-  options: AnalysisOptions
+  options: AnalysisOptions,
+  responseType: "text" | "json" = "json"
 ): Promise<string> {
   if (isAnalysisCancelled()) {
     throw new Error("Análise cancelada pelo usuário.");
@@ -569,9 +570,9 @@ async function callLLM(
       systemInstruction: systemInstruction ? {
         parts: [{ text: systemInstruction }]
       } : undefined,
-      generationConfig: {
+      generationConfig: responseType === "json" ? {
         responseMimeType: "application/json"
-      }
+      } : undefined
     };
 
     const response = await fetch(url, {
@@ -1323,8 +1324,23 @@ Gere o JSON no seguinte formato estrito:
   }
 
   // Escrever scan-result.json final
+  let resolvedProjectName = (parsedScanner.name || "").trim();
+  const lowerName = resolvedProjectName.toLowerCase();
+  if (
+    !resolvedProjectName ||
+    lowerName === "projeto indeterminado" ||
+    lowerName === "undetermined project" ||
+    lowerName === "undetermined-project" ||
+    lowerName === "unknown" ||
+    lowerName === "sem nome" ||
+    lowerName === "projeto" ||
+    lowerName === "project"
+  ) {
+    resolvedProjectName = path.basename(projectPath);
+  }
+
   const scanResult = {
-    name: parsedScanner.name || path.basename(projectPath),
+    name: resolvedProjectName,
     description: parsedScanner.description || "Sem descrição disponível.",
     languages: parsedScanner.languages || [],
     frameworks: parsedScanner.frameworks || [],
@@ -1878,4 +1894,135 @@ Responda em formato JSON estrito:
     message: t.save.success,
     logLine: t.save.successLog(finalGraphPath)
   });
+}
+
+// Lógica de chat contextual baseada no Grafo de Conhecimento (Ask to AI)
+export async function runAskAI(
+  prompt: string,
+  selectedNodeId: string | null,
+  graph: any,
+  options: AnalysisOptions
+): Promise<string> {
+  let focusedNodeContext = "";
+  if (selectedNodeId && Array.isArray(graph.nodes)) {
+    const node = graph.nodes.find((n: any) => n.id === selectedNodeId);
+    if (node) {
+      focusedNodeContext = `Nó Focado Atualmente:\n- Nome: ${node.name}\n- Tipo: ${node.type}\n- Resumo: ${node.summary}\n`;
+      if (node.filePath) focusedNodeContext += `- Caminho do Arquivo: ${node.filePath}\n`;
+      if (node.complexity) focusedNodeContext += `- Complexidade: ${node.complexity}\n`;
+      if (node.tags && node.tags.length) focusedNodeContext += `- Tags: ${node.tags.join(", ")}\n`;
+      focusedNodeContext += `\n`;
+    }
+  }
+
+  // Busca simples de nós por palavra-chave na pergunta
+  const relevantNodes: any[] = [];
+  const queryWords = prompt.toLowerCase()
+    .replace(/[^\w\s]/g, " ")
+    .split(/\s+/)
+    .filter(w => w.length > 2 && !["como", "para", "o", "a", "que", "em", "um", "uma", "de", "do", "da", "para", "com", "como", "how", "to", "the", "what", "is", "of", "and", "in", "it", "that", "this"].includes(w));
+
+  if (Array.isArray(graph.nodes)) {
+    const scoredNodes = graph.nodes.map((node: any) => {
+      let score = 0;
+      const nameLower = (node.name || "").toLowerCase();
+      const summaryLower = (node.summary || "").toLowerCase();
+      const tags = Array.isArray(node.tags) ? node.tags : [];
+
+      for (const word of queryWords) {
+        if (nameLower.includes(word)) score += 5;
+        if (summaryLower.includes(word)) score += 2;
+        if (tags.some((t: any) => String(t).toLowerCase().includes(word))) score += 3;
+      }
+      return { node, score };
+    });
+
+    const topScored = scoredNodes
+      .filter((n: any) => n.score > 0)
+      .sort((a: any, b: any) => b.score - a.score)
+      .slice(0, 12)
+      .map((n: any) => n.node);
+
+    relevantNodes.push(...topScored);
+  }
+
+  // Fallback para os primeiros 10 nós de arquivo se nenhum nó for retornado na busca
+  if (relevantNodes.length === 0 && Array.isArray(graph.nodes)) {
+    const files = graph.nodes.filter((n: any) => n.type === "file").slice(0, 10);
+    relevantNodes.push(...files);
+  }
+
+  // Garantir que o nó focado esteja na lista de nós relevantes
+  if (selectedNodeId) {
+    const alreadyAdded = relevantNodes.some((n: any) => n.id === selectedNodeId);
+    if (!alreadyAdded && Array.isArray(graph.nodes)) {
+      const node = graph.nodes.find((n: any) => n.id === selectedNodeId);
+      if (node) relevantNodes.unshift(node);
+    }
+  }
+
+  // Relacionamentos entre os nós relevantes
+  const relevantEdges: any[] = [];
+  if (Array.isArray(graph.edges)) {
+    const nodeIds = new Set(relevantNodes.map((n: any) => n.id));
+    for (const edge of graph.edges) {
+      if (nodeIds.has(edge.source) && nodeIds.has(edge.target)) {
+        relevantEdges.push(edge);
+      }
+    }
+  }
+
+  // Formatação do contexto para a IA
+  let contextText = `## Metadados do Projeto\n`;
+  if (graph.project) {
+    contextText += `- Nome: ${graph.project.name || "Sem nome"}\n`;
+    contextText += `- Descrição: ${graph.project.description || "Sem descrição"}\n`;
+    if (Array.isArray(graph.project.languages)) {
+      contextText += `- Linguagens: ${graph.project.languages.join(", ")}\n`;
+    }
+    if (Array.isArray(graph.project.frameworks)) {
+      contextText += `- Frameworks: ${graph.project.frameworks.join(", ")}\n`;
+    }
+  }
+  contextText += `\n`;
+
+  if (focusedNodeContext) {
+    contextText += focusedNodeContext;
+  }
+
+  contextText += `## Componentes de Código Relevantes\n`;
+  for (const node of relevantNodes.slice(0, 15)) {
+    contextText += `### ${node.name} (${node.type})\n`;
+    if (node.filePath) contextText += `- Arquivo: ${node.filePath}\n`;
+    contextText += `- Resumo: ${node.summary}\n`;
+    if (node.complexity) contextText += `- Complexidade: ${node.complexity}\n`;
+    if (node.tags && node.tags.length) contextText += `- Tags: ${node.tags.join(", ")}\n`;
+    contextText += `\n`;
+  }
+
+  if (relevantEdges.length > 0) {
+    contextText += `## Relacionamentos entre Componentes\n`;
+    for (const edge of relevantEdges.slice(0, 20)) {
+      const srcNode = relevantNodes.find(n => n.id === edge.source);
+      const tgtNode = relevantNodes.find(n => n.id === edge.target);
+      const srcName = srcNode ? srcNode.name : edge.source;
+      const tgtName = tgtNode ? tgtNode.name : edge.target;
+      contextText += `- ${srcName} --[${edge.type}]--> ${tgtName}${edge.description ? ` (${edge.description})` : ""}\n`;
+    }
+    contextText += `\n`;
+  }
+
+  const systemInstruction = `Você é um assistente de arquitetura de software especializado em explicar bases de código.
+Você tem acesso a um grafo de conhecimento semântico e estrutural do projeto.
+Use o contexto fornecido para responder às perguntas do usuário com precisão.
+Sempre responda em português do Brasil de forma clara, técnica e objetiva. Referencie os arquivos e funções específicos do projeto.`;
+
+  const promptBody = `Aqui está o contexto extraído do grafo de conhecimento do projeto:
+
+${contextText}
+
+Com base nas informações acima, responda à seguinte pergunta do usuário:
+"${prompt}"`;
+
+  return await callLLM(promptBody, systemInstruction, options, "text");
 }

@@ -3,7 +3,7 @@ import path from "path";
 import fs from "fs";
 import crypto from "crypto";
 import express from "express";
-import { runAnalysis, ProgressUpdate, AnalysisOptions, cancelActiveAnalysis, setAnalysisConfirmation } from "./orquestrador.js";
+import { runAnalysis, ProgressUpdate, AnalysisOptions, cancelActiveAnalysis, setAnalysisConfirmation, runAskAI } from "./orquestrador.js";
 
 let mainWindow: BrowserWindow | null = null;
 let expressApp: express.Express | null = null;
@@ -145,6 +145,42 @@ function startLocalServer(port = 5173): Promise<number> {
       }
     });
 
+    // Endpoint para realizar perguntas com IA (Ask to AI) baseadas no Grafo de Conhecimento
+    expressApp.post("/ask-ai", authMiddleware, express.json(), async (req: express.Request, res: express.Response) => {
+      const { prompt, selectedNodeId } = req.body;
+      if (!prompt || typeof prompt !== "string") {
+        res.status(400).json({ error: "O parâmetro 'prompt' é obrigatório." });
+        return;
+      }
+
+      if (!activeProjectPath) {
+        res.status(400).json({ error: "Nenhum projeto ativo selecionado." });
+        return;
+      }
+
+      try {
+        const settings = getSettings();
+        if (!settings.apiKey) {
+          res.status(400).json({ error: "Chave de API (API Key) não configurada no aplicativo Desktop." });
+          return;
+        }
+
+        const graphPath = path.join(activeProjectPath, ".understand-anything/knowledge-graph.json");
+        if (!fs.existsSync(graphPath)) {
+          res.status(400).json({ error: "Grafo de conhecimento não encontrado. Execute a análise primeiro." });
+          return;
+        }
+
+        const graph = JSON.parse(fs.readFileSync(graphPath, "utf-8"));
+
+        const responseText = await runAskAI(prompt, selectedNodeId || null, graph, settings);
+        res.json({ response: responseText });
+      } catch (err: any) {
+        console.error("Erro no endpoint /ask-ai:", err);
+        res.status(500).json({ error: err.message || "Erro interno ao processar a pergunta com IA." });
+      }
+    });
+
     // Servir arquivos estáticos do Dashboard compilados em produção
     // O dashboard compilado fica na pasta `dashboard/dist`
     // Caminho relativo ao build do desktop
@@ -219,7 +255,7 @@ app.whenReady().then(async () => {
       responseHeaders: {
         ...details.responseHeaders,
         "Content-Security-Policy": [
-          "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://127.0.0.1:*; img-src 'self' data:; font-src 'self' data:; frame-src http://127.0.0.1:*;"
+          "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://127.0.0.1:*; img-src 'self' data: blob:; font-src 'self' data:; frame-src http://127.0.0.1:*;"
         ]
       }
     });

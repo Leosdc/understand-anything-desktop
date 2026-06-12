@@ -4,6 +4,21 @@ All notable updates and engineering improvements applied to this integrated grap
 
 ---
 
+## [0.3.3] — 2026-06-12
+
+### Added
+- **Tradução do Modal de Caminhos**: Traduzidas todas as legendas, labels e mensagens do localizador de caminhos de dependência (`PathFinderModal`) em todos os 8 locales do dashboard.
+- **Internacionalização em 5 Idiomas**: Adicionadas as traduções completas para Português do Brasil (`pt.ts`) e Espanhol (`es.ts`), garantindo compatibilidade total com os 5 idiomas principais suportados pelo app desktop.
+
+### Changed
+- **Sincronização de Tema do Dashboard**: O dashboard agora carrega por padrão com o tema `dark-ocean` e destaque `ocean` (redefinido para corresponder exatamente ao azul celeste `#38bdf8` do aplicativo desktop).
+
+### Fixed
+- **Clean Text Q&A Chat Parser**: Ajustado o endpoint `/ask-ai` e a função do orchestrator para solicitar saídas textuais limpas (Markdown) em vez de JSON estruturado, eliminando a renderização de propriedades brutas no chat do assistente.
+- **Normalização de Nome de Projetos**: O orquestrador agora usa o nome físico do diretório (`path.basename`) como fallback caso a IA deduza títulos genéricos como "Projeto Indeterminado".
+
+---
+
 ## [0.3.2] — 2026-06-12
 
 ### Added
