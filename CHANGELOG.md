@@ -4,6 +4,16 @@ All notable updates and engineering improvements applied to this integrated grap
 
 ---
 
+## [0.3.2] — 2026-06-12
+
+### Added
+- **Enterprise Security & Compliance Guide**: Created a comprehensive [FOR-ENTERPRISES.md](file:///c:/Users/PC/Documents/Bots/Understand-Anything/FOR-ENTERPRISES.md) guide at the repository root. Fully translated into 5 languages (English, Portuguese, Spanish, Japanese, and Chinese), it details local-first security boundaries, embedded loopback web servers, AST processing pipelines, and direct HTTPS connections to LLM API endpoints.
+
+### Fixed
+- **Missing Release Dependencies**: Resolved execution exceptions ("Cannot find module") in clean desktop environments by mapping and packaging all transitive dependencies of `graphology` and `mnemonist` (`graphology-utils`, `graphology-indices`, `graphology-types`, `mnemonist`, `obliterator`, and `pandemonium`) in the Electron app production bundle.
+
+---
+
 ## [0.3.1] — 2026-06-11
 
 ### Security

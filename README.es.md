@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://github.com/Leosdc/understand-anything-desktop"><img src="https://img.shields.io/badge/GitHub-Repo-181717?logo=github" alt="GitHub" /></a>
-  <a href="https://github.com/Leosdc/understand-anything-desktop/releases"><img src="https://img.shields.io/badge/Versi%C3%B3n-v0.3.1-blue" alt="Versión" /></a>
+  <a href="https://github.com/Leosdc/understand-anything-desktop/releases"><img src="https://img.shields.io/badge/Versi%C3%B3n-v0.3.2-blue" alt="Versión" /></a>
   <a href="https://github.com/Leosdc/understand-anything-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT" /></a>
   <a href="https://github.com/Lum1104"><img src="https://img.shields.io/badge/Creador_Original-Yuxiang_Lin_(Lum1104)-38bdf8" alt="Creador Original" /></a>
 </p>
