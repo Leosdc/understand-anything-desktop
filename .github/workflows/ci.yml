@@ -20,7 +20,7 @@ jobs:
 
       - name: Clone and build plugin core
         run: |
-          git clone https://github.com/Lum1104/Understand-Anything.git temp-plugin
+          git clone https://github.com/Leosdc/Understand-Anything.git temp-plugin
           cd temp-plugin/understand-anything-plugin/packages/core
           npm install
           npx tsc
