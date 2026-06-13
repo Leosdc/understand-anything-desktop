@@ -7,15 +7,16 @@ All notable updates and engineering improvements applied to this integrated grap
 ## [0.3.3] — 2026-06-12
 
 ### Added
-- **Tradução do Modal de Caminhos**: Traduzidas todas as legendas, labels e mensagens do localizador de caminhos de dependência (`PathFinderModal`) em todos os 8 locales do dashboard.
-- **Internacionalização em 5 Idiomas**: Adicionadas as traduções completas para Português do Brasil (`pt.ts`) e Espanhol (`es.ts`), garantindo compatibilidade total com os 5 idiomas principais suportados pelo app desktop.
+- **Contextual "Ask AI" Chat Panel**: Integrated an interactive Q&A sidebar panel in the dashboard, powered by an embedded local Express proxy endpoint (`POST /ask-ai`) that reads the knowledge graph context and uses the configured LLM safely without exposing API keys to the frontend.
+- **Dependency Path Finder Localization**: Translated all titles, labels, placeholders, and error/success messages in the `PathFinderModal` across all 8 dashboard locales.
+- **Full 5-Language Internationalization**: Implemented complete translation files for Brazilian Portuguese (`pt.ts`) and Spanish (`es.ts`), ensuring full compatibility with the 5 primary languages supported by the desktop app wrapper.
 
 ### Changed
-- **Sincronização de Tema do Dashboard**: O dashboard agora carrega por padrão com o tema `dark-ocean` e destaque `ocean` (redefinido para corresponder exatamente ao azul celeste `#38bdf8` do aplicativo desktop).
+- **Default Theme & App Accent Alignment**: Changed default theme preset to `dark-ocean` and accent color to `ocean` (which has been customized to match the native sky blue color `#38bdf8` of the desktop app).
 
 ### Fixed
-- **Clean Text Q&A Chat Parser**: Ajustado o endpoint `/ask-ai` e a função do orchestrator para solicitar saídas textuais limpas (Markdown) em vez de JSON estruturado, eliminando a renderização de propriedades brutas no chat do assistente.
-- **Normalização de Nome de Projetos**: O orquestrador agora usa o nome físico do diretório (`path.basename`) como fallback caso a IA deduza títulos genéricos como "Projeto Indeterminado".
+- **Markdown Q&A Chat Parser**: Configured the `/ask-ai` endpoint and the backend orchestrator to request clean markdown/text output instead of structured JSON, resolving the raw JSON render in the chat assistant.
+- **Project Name Normalization**: The backend orchestrator now uses the physical directory name (`path.basename`) as a fallback if the AI infers generic or undetermined project titles like "Projeto Indeterminado".
 
 ---
 
